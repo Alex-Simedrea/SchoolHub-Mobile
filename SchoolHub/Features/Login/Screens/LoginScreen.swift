@@ -9,11 +9,17 @@ import SwiftUI
 
 struct LoginScreen: View {
     @ObservedObject var viewModel: LoginViewModel = .init()
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
+                    TextField(
+                        "Request URL",
+                        text: $viewModel.requestUrl
+                    )
+                    .textInputAutocapitalization(.never)
                     TextField(
                         "Username",
                         text: $viewModel.username
@@ -25,15 +31,24 @@ struct LoginScreen: View {
                     )
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
-                    Text("\(viewModel.keychainData.username ?? "nimic")")
+//                    Text("\(viewModel.keychainData.username ?? "nimic")")
                 }
                 Button("Login") {
                     viewModel.login()
+                    dismiss()
                 }
                 .frame(maxWidth: .infinity)
             }
             .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Login")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ struct HomeScreen: View {
     @ObservedObject var viewModel: HomeViewModel = .init()
     @Namespace var namespace
     @Binding var selectedTab: Tabs
+    @State private var firstAppear = true
 
     var body: some View {
         NavigationStack {
@@ -41,7 +42,7 @@ struct HomeScreen: View {
                     StatsCard(
                         title: "Absences Stats",
                         systemName: "calendar",
-                        color: Color(.orange),
+                        color: Color(.tangerine),
                         values: [
                             String(viewModel.getAbsencesCountThisWeek(forSubjects: subjects)),
                             String(viewModel.getAbsencesCountThisMonth(forSubjects: subjects)),
@@ -72,7 +73,7 @@ struct HomeScreen: View {
                             AbsenceGeneralListItem(
                                 color: absence.subject?.color.color ?? .blue,
                                 symbolName: absence.subject?.symbolName ?? "graduationcap.fill",
-                                subjectName: absence.subject?.name ?? "",
+                                subjectName: absence.subject?.displayName ?? "",
                                 excused: absence.excused,
                                 date: absence.date
                             )
@@ -80,7 +81,7 @@ struct HomeScreen: View {
                             GradeGeneralListItem(
                                 color: grade.subject?.color.color ?? .blue,
                                 symbolName: grade.subject?.symbolName ?? "graduationcap.fill",
-                                subjectName: grade.subject?.name ?? "",
+                                subjectName: grade.subject?.displayName ?? "",
                                 date: grade.date,
                                 value: grade.value
                             )
@@ -96,11 +97,18 @@ struct HomeScreen: View {
             .listSectionSpacing(10)
         }
         .onAppear {
-//            Task { try await fetchAndSaveData() }
+            if firstAppear {
+                Task { try await fetchAndSaveData() }
+                firstAppear = false
+            }
         }
     }
 
     private func fetchAndSaveData() async throws {
+        if !Auth.shared.loggedIn {
+            return
+        }
+
         let fetchedSubjects = try await viewModel.getData()
 
         for fetchedSubject in fetchedSubjects {

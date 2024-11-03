@@ -1,5 +1,5 @@
 {
-  "originHash" : "62bd3ecd3f3a08b9c34073443dccce8e38d196b7aa19641d50753d386bc169e2",
+  "originHash" : "73a5f6c63a3f858e45c844437488e01d90c1cc35611e8acdc97ecc4e4e1136b7",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -11,12 +11,30 @@
       }
     },
     {
+      "identity" : "sfsymbolspicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alessiorubicini/SFSymbolsPicker",
+      "state" : {
+        "revision" : "73c909b8a7fc77a30dd04208e33f759f8b52c4c8",
+        "version" : "1.0.6"
+      }
+    },
+    {
       "identity" : "swiftlintplugins",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
       "state" : {
         "revision" : "7c80ce6f142164b0201871e580b021d1b2c69804",
         "version" : "0.57.0"
+      }
+    },
+    {
+      "identity" : "symbolpicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/xnth97/SymbolPicker.git",
+      "state" : {
+        "revision" : "f82b64bcc3d761c9e63aaa10b1912bba72cbf6d8",
+        "version" : "1.5.3"
       }
     }
   ],

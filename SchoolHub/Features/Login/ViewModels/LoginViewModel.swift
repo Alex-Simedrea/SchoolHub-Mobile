@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import Alamofire
 
 class LoginViewModel: ObservableObject {
     @Published var username: String = ""
     @Published var password: String = ""
+    @Published var requestUrl: String = ""
     
     @Published var keychainData = Auth.shared.getCredentials()
 
     func login() {
-        Auth.shared.setCredentials(username: username, password: password)
+        Auth.shared.setCredentials(username: username, password: password, requestUrl: requestUrl)
     }
 }

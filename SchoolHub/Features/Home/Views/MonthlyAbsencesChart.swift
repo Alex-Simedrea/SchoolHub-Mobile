@@ -17,7 +17,7 @@ struct MonthlyAbsencesChart: View {
                 x: .value("Month", $0.month, unit: .month),
                 y: .value("Sales", $0.count)
             )
-            .foregroundStyle(Color(.orange))
+            .foregroundStyle(Color(.tangerine))
             
             RuleMark(
                 x: .value("Today", Date(), unit: .day)

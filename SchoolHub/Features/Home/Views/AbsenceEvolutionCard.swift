@@ -63,7 +63,7 @@ struct AbsenceEvolutionCard: View {
             CardTemplate(
                 systemName: "calendar",
                 title: "Absences",
-                color: Color(.orange)
+                color: Color(.tangerine)
             ) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(comparisonText)
@@ -87,7 +87,7 @@ struct AbsenceEvolutionCard: View {
                             .frame(width: 32, alignment: .leading)
                             GeometryReader { geometry in
                                 RoundedRectangle(cornerRadius: 4)
-                                    .foregroundStyle(Color(.orange))
+                                    .foregroundStyle(Color(.tangerine))
                                     .frame(
                                         width: geometry.size.width * normalizedNumbers.current,
                                         height: 24
@@ -113,7 +113,7 @@ struct AbsenceEvolutionCard: View {
                             .frame(width: 32, alignment: .leading)
                             GeometryReader { geometry in
                                 RoundedRectangle(cornerRadius: 4)
-                                    .foregroundStyle(Color(.orange))
+                                    .foregroundStyle(Color(.tangerine))
                                     .frame(
                                         width: geometry.size.width * normalizedNumbers.previous,
                                         height: 24

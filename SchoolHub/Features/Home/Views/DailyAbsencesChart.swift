@@ -20,7 +20,7 @@ struct DailyAbsencesChart: View {
                     y: .value("Count", $0.count)
                 )
             }
-            .foregroundStyle(Color(.orange))
+            .foregroundStyle(Color(.tangerine))
             
             RuleMark(
                 x: .value("Today", Date(), unit: .day)

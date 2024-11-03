@@ -22,7 +22,7 @@ struct AbsenceGeneralListItem: View {
                     .foregroundStyle(color)
                     .overlay {
                         Image(systemName: symbolName)
-                            .foregroundStyle(.background)
+                            .foregroundStyle(.white)
                             .fontWeight(.semibold)
                     }
                 VStack(alignment: .leading, spacing: 0) {

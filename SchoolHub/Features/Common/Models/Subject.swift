@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-enum SubjectColor: String, Codable {
+enum SubjectColor: String, Codable, Identifiable, CaseIterable {
     case red
     case blue
     case green
@@ -39,31 +39,44 @@ enum SubjectColor: String, Codable {
         case .brown: return .brown
         }
     }
+    
+    var name: String {
+        rawValue.capitalized
+    }
+    
+    var id: String { name }
 }
 
 @Model
 class Subject {
+    @Attribute(.unique) var id = UUID()
     var name: String
     @Relationship(deleteRule: .cascade) var grades: [Grade]
     @Relationship(deleteRule: .cascade) var absences: [Absence]
     var color: SubjectColor
     var symbolName: String
     var displayName: String
+    var hidden: Bool
+    @Relationship(deleteRule: .cascade) var timeSlots: [TimeSlot] = []
 
     init(
         name: String,
         grades: [Grade],
         absences: [Absence],
-        color: SubjectColor? = nil,
-        symbolName: String? = nil,
-        displayName: String? = nil
+        color: SubjectColor = SubjectColor.blue,
+        symbolName: String = "graduationcap.fill",
+        displayName: String? = nil,
+        hidden: Bool = false,
+        timeSlots: [TimeSlot] = []
     ) {
         self.name = name
         self.grades = grades
         self.absences = absences
-        self.color = color ?? SubjectColor.blue
-        self.symbolName = symbolName ?? "graduationcap.fill"
+        self.color = color
+        self.symbolName = symbolName
         self.displayName = displayName ?? name
+        self.hidden = hidden
+        self.timeSlots = timeSlots
     }
 }
 
@@ -72,19 +85,19 @@ extension Subject {
         guard grades.count > 0 else { return 0 }
         return Double(grades.map(\.value).reduce(0, +)) / Double(grades.count)
     }
-    
+
     func gradesCount() -> Int {
         grades.count
     }
-    
+
     func excusedAbsencesCount() -> Int {
         absences.filter(\.excused).count
     }
-    
+
     func unexcusedAbsencesCount() -> Int {
         absences.filter { !$0.excused }.count
     }
-    
+
     func absencesCount() -> Int {
         absences.count
     }

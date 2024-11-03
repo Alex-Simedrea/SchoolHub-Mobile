@@ -1,0 +1,596 @@
+[
+    {
+        "name" : "Istoria evreilor, holocaustul",
+        "hidden" : false,
+        "color" : "yellow",
+        "id" : "54FA4413-1217-4939-954D-4A8DBFE0A010",
+        "timeSlots" : [
+            {
+                "location" : "",
+                "weekday" : 1,
+                "startTime" : "2024-11-03T11:10:00Z",
+                "endTime" : "2024-11-03T12:00:00Z",
+                "id" : "E3A56F8F-58E5-404B-8542-52EBE6E5828B"
+            }
+        ],
+        "symbolName" : "text.book.closed.fill",
+        "grades" : [
+            
+        ],
+        "absences" : [
+            {
+                "id" : "E78AFFA8-257F-4085-871C-00CE6DC11151",
+                "date" : "2024-09-24T21:00:00Z",
+                "excused" : true
+            },
+            {
+                "date" : "2024-09-29T21:00:00Z",
+                "id" : "E7242E01-5503-475A-9931-0DA2D4CDF1A8",
+                "excused" : true
+            }
+        ],
+        "displayName" : "Istoria evreilor"
+    },
+    {
+        "grades" : [
+            
+        ],
+        "absences" : [
+            
+        ],
+        "name" : "Biologie",
+        "symbolName" : "leaf.fill",
+        "displayName" : "Biologie",
+        "color" : "green",
+        "hidden" : false,
+        "id" : "6D0E652B-556A-42EA-967B-A64F694413A4",
+        "timeSlots" : [
+            {
+                "id" : "A02E561F-9225-4094-883C-BFA929B4B82D",
+                "startTime" : "2024-11-03T09:10:00Z",
+                "location" : "",
+                "endTime" : "2024-11-03T10:00:00Z",
+                "weekday" : 2
+            }
+        ]
+    },
+    {
+        "id" : "63573AC4-57B4-4771-BBE6-8CFF2FE863F5",
+        "symbolName" : "globe",
+        "absences" : [
+            {
+                "excused" : true,
+                "id" : "26F2E1CE-333E-4DE2-9E3E-E58813496218",
+                "date" : "2024-09-22T21:00:00Z"
+            },
+            {
+                "id" : "BA5E4F53-04BA-4566-A447-067DDBD9BDC0",
+                "date" : "2024-09-29T21:00:00Z",
+                "excused" : true
+            }
+        ],
+        "timeSlots" : [
+            {
+                "id" : "7900D5DB-88CB-4AB8-9954-1419D93140FE",
+                "endTime" : "2024-11-03T08:50:00Z",
+                "startTime" : "2024-11-03T08:00:00Z",
+                "location" : "",
+                "weekday" : 3
+            },
+            {
+                "id" : "7504263E-F4AC-44A1-87F9-888155EED65B",
+                "weekday" : 1,
+                "startTime" : "2024-11-03T06:00:00Z",
+                "location" : "",
+                "endTime" : "2024-11-03T06:50:00Z"
+            }
+        ],
+        "name" : "Limba engleză",
+        "hidden" : false,
+        "grades" : [
+            
+        ],
+        "displayName" : "Engleză",
+        "color" : "indigo"
+    },
+    {
+        "symbolName" : "book.closed.fill",
+        "grades" : [
+            
+        ],
+        "displayName" : "Religie",
+        "absences" : [
+            {
+                "id" : "A9AD3CBB-4C47-4F75-B765-8B4D3BA2754F",
+                "date" : "2024-09-30T21:00:00Z",
+                "excused" : true
+            }
+        ],
+        "id" : "EDAF8558-CD11-4B77-A01D-4C4573733752",
+        "color" : "red",
+        "name" : "Religie",
+        "hidden" : false,
+        "timeSlots" : [
+            {
+                "startTime" : "2024-11-03T06:00:00Z",
+                "location" : "",
+                "id" : "8344ECF7-27BE-4C91-9563-9CE6B8D23F5D",
+                "weekday" : 2,
+                "endTime" : "2024-11-03T06:50:00Z"
+            }
+        ]
+    },
+    {
+        "displayName" : "Geografie",
+        "grades" : [
+            
+        ],
+        "name" : "Geografie",
+        "absences" : [
+            {
+                "excused" : true,
+                "id" : "68E45353-5418-4F4F-9EF6-AB900289901A",
+                "date" : "2024-10-01T21:00:00Z"
+            }
+        ],
+        "color" : "green",
+        "symbolName" : "globe.europe.africa.fill",
+        "hidden" : false,
+        "id" : "41C9A418-E675-4D69-97FB-2D72B99AEF72",
+        "timeSlots" : [
+            {
+                "weekday" : 3,
+                "id" : "A62ACF09-25B3-4AF6-B612-6228FFF1E529",
+                "startTime" : "2024-11-03T10:10:00Z",
+                "location" : "",
+                "endTime" : "2024-11-03T11:00:00Z"
+            }
+        ]
+    },
+    {
+        "hidden" : false,
+        "timeSlots" : [
+            {
+                "startTime" : "2024-11-03T10:10:00Z",
+                "location" : "",
+                "id" : "01587D90-4FB4-46D2-A050-8181FEF7979D",
+                "weekday" : 1,
+                "endTime" : "2024-11-03T11:00:00Z"
+            },
+            {
+                "endTime" : "2024-11-03T12:00:00Z",
+                "weekday" : 2,
+                "location" : "",
+                "startTime" : "2024-11-03T11:10:00Z",
+                "id" : "48EEAF2A-CAE3-43CC-8DCB-208FAFD6BEA4"
+            }
+        ],
+        "symbolName" : "character.book.closed.fill",
+        "displayName" : "Franceză",
+        "color" : "purple",
+        "id" : "62200F8D-6DB6-471D-91ED-4586FB580D5C",
+        "grades" : [
+            
+        ],
+        "absences" : [
+            {
+                "id" : "CDD59E01-4D20-45FA-9BB3-216CB760CE43",
+                "excused" : true,
+                "date" : "2024-09-23T21:00:00Z"
+            }
+        ],
+        "name" : "Limba franceză"
+    },
+    {
+        "displayName" : "Economie",
+        "color" : "brown",
+        "symbolName" : "dollarsign.circle.fill",
+        "grades" : [
+            
+        ],
+        "id" : "BFDA591B-B2C8-415B-A35D-4EB903C96267",
+        "name" : "Economie",
+        "hidden" : false,
+        "absences" : [
+            {
+                "id" : "97C2AD87-B243-4476-9741-8702D14D6FD4",
+                "date" : "2024-09-22T21:00:00Z",
+                "excused" : true
+            },
+            {
+                "excused" : true,
+                "date" : "2024-09-29T21:00:00Z",
+                "id" : "D8D98E04-55C8-4291-9BEA-76B17B4EB7A1"
+            }
+        ],
+        "timeSlots" : [
+            {
+                "weekday" : 1,
+                "endTime" : "2024-11-03T07:50:00Z",
+                "location" : "",
+                "id" : "73875341-6997-4BF2-83AE-B728543218A0",
+                "startTime" : "2024-11-03T07:00:00Z"
+            }
+        ]
+    },
+    {
+        "name" : "Matematică",
+        "timeSlots" : [
+            {
+                "startTime" : "2024-11-03T09:10:00Z",
+                "endTime" : "2024-11-03T10:00:00Z",
+                "location" : "",
+                "weekday" : 1,
+                "id" : "29D8D1C3-28B9-4AAF-9C8F-0F96CFA09961"
+            },
+            {
+                "endTime" : "2024-11-03T06:50:00Z",
+                "startTime" : "2024-11-03T06:00:00Z",
+                "id" : "B4FA0575-0174-4378-B107-A482D4A99286",
+                "location" : "",
+                "weekday" : 5
+            },
+            {
+                "id" : "0772579D-51DF-429A-8559-960FF42E13C8",
+                "startTime" : "2024-11-03T06:00:00Z",
+                "location" : "",
+                "weekday" : 4,
+                "endTime" : "2024-11-03T06:50:00Z"
+            },
+            {
+                "id" : "A5ADFCD5-4D4F-4B7A-ADC6-6331A794C679",
+                "weekday" : 3,
+                "endTime" : "2024-11-03T12:00:00Z",
+                "location" : "",
+                "startTime" : "2024-11-03T11:10:00Z"
+            }
+        ],
+        "symbolName" : "x.squareroot",
+        "grades" : [
+            
+        ],
+        "displayName" : "Matematică",
+        "absences" : [
+            {
+                "excused" : true,
+                "id" : "3F62074F-CB6D-479F-816F-9517ECF178D5",
+                "date" : "2024-10-02T21:00:00Z"
+            },
+            {
+                "date" : "2024-09-29T21:00:00Z",
+                "id" : "F0B525FC-37B6-42D8-B94C-33BA57BCF9C6",
+                "excused" : true
+            },
+            {
+                "date" : "2024-09-24T21:00:00Z",
+                "id" : "46F1B985-2341-4DAB-AE21-BB0DF84AFC61",
+                "excused" : true
+            },
+            {
+                "date" : "2024-09-25T21:00:00Z",
+                "excused" : true,
+                "id" : "F1251629-D82D-4B2A-B430-01F0F42A8A50"
+            }
+        ],
+        "hidden" : false,
+        "id" : "0691E2DC-BA9D-49E6-8D06-FA1A6759CB52",
+        "color" : "mint"
+    },
+    {
+        "symbolName" : "graduationcap.fill",
+        "id" : "68B3BD06-C904-4AC8-AC4C-2EAD4BF40847",
+        "displayName" : "Limba germană",
+        "timeSlots" : [
+            
+        ],
+        "name" : "Limba germană",
+        "absences" : [
+            
+        ],
+        "color" : "blue",
+        "grades" : [
+            
+        ],
+        "hidden" : true
+    },
+    {
+        "hidden" : false,
+        "grades" : [
+            
+        ],
+        "timeSlots" : [
+            {
+                "weekday" : 2,
+                "location" : "",
+                "startTime" : "2024-11-03T08:00:00Z",
+                "id" : "8CADCFD6-9121-4136-8000-242ECA4A3FFF",
+                "endTime" : "2024-11-03T08:50:00Z"
+            },
+            {
+                "id" : "2E7A17A6-BF26-41D7-82B5-275E01508E2A",
+                "location" : "",
+                "startTime" : "2024-11-03T07:00:00Z",
+                "weekday" : 2,
+                "endTime" : "2024-11-03T07:50:00Z"
+            },
+            {
+                "endTime" : "2024-11-03T10:00:00Z",
+                "id" : "84543A05-B289-4BDD-9F7F-3EF2E8B80CF9",
+                "location" : "Laborator",
+                "startTime" : "2024-11-03T09:10:00Z",
+                "weekday" : 4
+            },
+            {
+                "endTime" : "2024-11-03T11:00:00Z",
+                "id" : "0A7EB8A4-21B7-475B-89C1-AB9B9AC07BAC",
+                "weekday" : 4,
+                "startTime" : "2024-11-03T10:10:00Z",
+                "location" : "Laborator"
+            },
+            {
+                "startTime" : "2024-11-03T08:00:00Z",
+                "weekday" : 5,
+                "id" : "301D0870-CB5B-4280-A0F3-EEFF3199CCA7",
+                "location" : "",
+                "endTime" : "2024-11-03T08:50:00Z"
+            },
+            {
+                "id" : "C9DF4156-25D1-43AD-B90D-FA2136A0708D",
+                "startTime" : "2024-11-03T11:10:00Z",
+                "endTime" : "2024-11-03T12:00:00Z",
+                "weekday" : 4,
+                "location" : "Laborator"
+            },
+            {
+                "startTime" : "2024-11-03T10:10:00Z",
+                "weekday" : 5,
+                "id" : "0BAAF5DE-CD5C-475D-9483-2C6F81A4839B",
+                "location" : "",
+                "endTime" : "2024-11-03T11:00:00Z"
+            }
+        ],
+        "name" : "Informatică",
+        "displayName" : "Informatică",
+        "symbolName" : "laptopcomputer",
+        "color" : "blue",
+        "id" : "22ABCF97-359A-4A48-BE0D-2E47E48E3403",
+        "absences" : [
+            {
+                "excused" : true,
+                "id" : "FA7AD253-22BB-42A5-B36B-E0C37D13C115",
+                "date" : "2024-09-23T21:00:00Z"
+            },
+            {
+                "id" : "6336E365-5FEB-4D5D-981A-F4C8C37DCA5D",
+                "excused" : true,
+                "date" : "2024-09-30T21:00:00Z"
+            },
+            {
+                "date" : "2024-09-23T21:00:00Z",
+                "id" : "3401AE90-FCB6-463D-BC4C-A155EA628874",
+                "excused" : true
+            }
+        ]
+    },
+    {
+        "displayName" : "Purtare",
+        "hidden" : false,
+        "absences" : [
+            
+        ],
+        "name" : "Purtare",
+        "grades" : [
+            {
+                "date" : "2024-10-24T21:00:00Z",
+                "id" : "5C590B1D-18FE-4E8E-B924-A9B19D705A1F",
+                "value" : 10
+            }
+        ],
+        "color" : "blue",
+        "id" : "D129F3C3-ACAE-4A4D-8F84-4794AC8D343B",
+        "symbolName" : "figure.arms.open",
+        "timeSlots" : [
+            
+        ]
+    },
+    {
+        "timeSlots" : [
+            {
+                "weekday" : 2,
+                "startTime" : "2024-11-03T10:10:00Z",
+                "id" : "106D2075-7CE7-4A3F-A229-A4F5218EA087",
+                "location" : "",
+                "endTime" : "2024-11-03T11:00:00Z"
+            },
+            {
+                "startTime" : "2024-11-03T06:00:00Z",
+                "weekday" : 3,
+                "location" : "",
+                "endTime" : "2024-11-03T06:50:00Z",
+                "id" : "F36BED7B-8008-45D5-B99E-55AA401A0114"
+            },
+            {
+                "id" : "63D58C91-5DE4-4602-B175-B6CB3D47E38A",
+                "startTime" : "2024-11-03T07:00:00Z",
+                "endTime" : "2024-11-03T07:50:00Z",
+                "location" : "",
+                "weekday" : 5
+            }
+        ],
+        "name" : "Limba și literatura română",
+        "color" : "orange",
+        "id" : "5925F773-6426-4D76-A25D-DF1141008699",
+        "absences" : [
+            {
+                "date" : "2024-10-01T21:00:00Z",
+                "excused" : true,
+                "id" : "D364F088-57F0-44A2-B09D-D686FB2500F8"
+            },
+            {
+                "date" : "2024-09-30T21:00:00Z",
+                "excused" : true,
+                "id" : "56B6DC51-557D-45D6-A576-E6B7DC14C932"
+            },
+            {
+                "id" : "6C3B40B4-EA59-4F58-A67C-88A95AADA2F7",
+                "date" : "2024-10-03T21:00:00Z",
+                "excused" : true
+            }
+        ],
+        "displayName" : "Română",
+        "symbolName" : "books.vertical.fill",
+        "grades" : [
+            
+        ],
+        "hidden" : false
+    },
+    {
+        "displayName" : "Istorie",
+        "absences" : [
+            {
+                "excused" : true,
+                "id" : "7DD60F98-0976-4F85-9F7D-7DA86D61C022",
+                "date" : "2024-09-25T21:00:00Z"
+            }
+        ],
+        "hidden" : false,
+        "id" : "7C8E75C5-8114-4762-9340-8902933793EE",
+        "timeSlots" : [
+            {
+                "endTime" : "2024-11-03T07:50:00Z",
+                "startTime" : "2024-11-03T07:00:00Z",
+                "weekday" : 4,
+                "location" : "",
+                "id" : "4A56DD29-D1A3-4051-8294-41A01A29803F"
+            }
+        ],
+        "symbolName" : "book.pages.fill",
+        "grades" : [
+            {
+                "date" : "2024-10-16T21:00:00Z",
+                "id" : "99CF7508-37F4-40E6-BDF4-F6E69386B84E",
+                "value" : 10
+            }
+        ],
+        "name" : "Istorie",
+        "color" : "orange"
+    },
+    {
+        "name" : "Fizică",
+        "absences" : [
+            {
+                "excused" : true,
+                "date" : "2024-10-01T21:00:00Z",
+                "id" : "995FBF9D-C59E-4CE6-8827-B93DC3CBADF9"
+            },
+            {
+                "id" : "775B6335-4B28-4620-9BFD-DADDBDC8D087",
+                "excused" : true,
+                "date" : "2024-09-22T21:00:00Z"
+            },
+            {
+                "date" : "2024-09-29T21:00:00Z",
+                "id" : "85EF39D0-22C2-4197-85ED-0E1CF9CAB4E0",
+                "excused" : true
+            }
+        ],
+        "timeSlots" : [
+            {
+                "weekday" : 1,
+                "location" : "",
+                "id" : "A6CE9B20-1757-48B0-B67C-F825E41557C9",
+                "startTime" : "2024-11-03T08:00:00Z",
+                "endTime" : "2024-11-03T08:50:00Z"
+            },
+            {
+                "weekday" : 5,
+                "startTime" : "2024-11-03T09:10:00Z",
+                "id" : "B69B5853-9D20-47C5-A989-41F04795EE6A",
+                "location" : "",
+                "endTime" : "2024-11-03T10:00:00Z"
+            },
+            {
+                "endTime" : "2024-11-03T10:00:00Z",
+                "id" : "DF9C1381-2EE0-44A7-8A66-EB8AAE361E85",
+                "startTime" : "2024-11-03T09:10:00Z",
+                "location" : "",
+                "weekday" : 3
+            }
+        ],
+        "hidden" : false,
+        "id" : "F6E213C7-E46D-4B15-87D9-87145233E784",
+        "displayName" : "Fizică",
+        "symbolName" : "atom",
+        "color" : "pink",
+        "grades" : [
+            
+        ]
+    },
+    {
+        "id" : "2B334C24-7301-4936-9544-D8DB7CF55487",
+        "symbolName" : "figure.run",
+        "displayName" : "Sport",
+        "grades" : [
+            
+        ],
+        "timeSlots" : [
+            {
+                "weekday" : 3,
+                "id" : "1E923202-484D-47E0-9F9C-7388035E5BD8",
+                "endTime" : "2024-11-03T07:50:00Z",
+                "startTime" : "2024-11-03T07:00:00Z"
+            }
+        ],
+        "hidden" : false,
+        "color" : "indigo",
+        "absences" : [
+            {
+                "excused" : true,
+                "date" : "2024-10-01T21:00:00Z",
+                "id" : "FBC77909-A040-4A3B-B016-797274638898"
+            },
+            {
+                "excused" : true,
+                "id" : "7CF181B9-A9CC-46A2-B286-25E38B470973",
+                "date" : "2024-10-08T21:00:00Z"
+            }
+        ],
+        "name" : "Educație fizică"
+    },
+    {
+        "grades" : [
+            {
+                "date" : "2024-10-16T21:00:00Z",
+                "id" : "A54A50E5-2E03-4C54-A604-94BD8D3CEC64",
+                "value" : 10
+            }
+        ],
+        "hidden" : false,
+        "name" : "Chimie",
+        "absences" : [
+            {
+                "date" : "2024-09-25T21:00:00Z",
+                "id" : "F689C838-05FA-489C-9084-D8E2BD7A23A0",
+                "excused" : true
+            },
+            {
+                "excused" : true,
+                "id" : "E5483D39-852F-4592-82DE-DFD2E748C6DB",
+                "date" : "2024-10-02T21:00:00Z"
+            }
+        ],
+        "symbolName" : "flask.fill",
+        "displayName" : "Chimie",
+        "timeSlots" : [
+            {
+                "location" : "",
+                "id" : "8071C578-3151-4B59-A877-90B084465632",
+                "weekday" : 4,
+                "startTime" : "2024-11-03T08:00:00Z",
+                "endTime" : "2024-11-03T08:50:00Z"
+            }
+        ],
+        "id" : "9B5E2028-F020-435A-A457-B282A8666573",
+        "color" : "teal"
+    }
+]

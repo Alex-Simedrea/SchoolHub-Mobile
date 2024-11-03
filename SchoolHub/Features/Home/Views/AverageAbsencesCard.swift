@@ -17,7 +17,7 @@ struct AverageAbsencesCard: View {
             CardTemplate(
                 systemName: "calendar",
                 title: "Absences",
-                color: Color(.orange)
+                color: Color(.tangerine)
             ) {
                 Chart {
                     ForEach(absences, id: \.month) {
@@ -30,12 +30,12 @@ struct AverageAbsencesCard: View {
                     RuleMark(
                         y: .value("Average", average)
                     )
-                    .foregroundStyle(Color(.orange))
+                    .foregroundStyle(Color(.tangerine))
                     .lineStyle(StrokeStyle(lineWidth: 3))
                     .annotation(position: .top, alignment: .leading) {
                         Text("Average per month: \(average, format: .number)")
                             .font(.body.bold())
-                            .foregroundStyle(Color(.orange))
+                            .foregroundStyle(Color(.tangerine))
                     }
                 }
                 .chartXAxis {

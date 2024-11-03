@@ -5,6 +5,7 @@
 //  Created by Alexandru Simedrea on 31.10.2024.
 //
 
+import SwiftData
 import SwiftUI
 
 struct StatCard: View {
@@ -47,7 +48,9 @@ struct StatCard: View {
 
 struct SubjectScreen: View {
     @State var subject: Subject
+    @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
+    @State private var isTimeStampPickerPresented = false
 
     var body: some View {
 //        ScrollView {
@@ -95,7 +98,7 @@ struct SubjectScreen: View {
                         StatCard(
                             symbolName: "number",
                             title: "Grades count",
-                            value: String(subject.grades.count),
+                            value: "\(subject.grades.count)/\(subject.timeSlots.count + 3)",
                             color: subject.color.color
                         )
                         StatCard(
@@ -171,6 +174,42 @@ struct SubjectScreen: View {
                     }
                 }
                 .headerProminence(.increased)
+                Section("Timetable") {
+                    ForEach(subject.timeSlots.sorted {
+                        $0.isEarlier(than: $1)
+                    }, id: \TimeSlot.id) { timeSlot in
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(timeSlot.weekday.name)
+                                Spacer()
+                                Text(
+                                    timeSlot.startTime
+                                        .formatted(.dateTime.hour().minute())
+                                )
+                                Text("-")
+                                Text(timeSlot.endTime.formatted(.dateTime.hour().minute()))
+                            }
+                            if let location = timeSlot.location, !location.isEmpty {
+                                Text(location)
+                                    .font(.callout)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                context.delete(timeSlot)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
+                    }
+                    Button {
+                        isTimeStampPickerPresented = true
+                    } label: {
+                        Label("Add time slot", systemImage: "plus")
+                    }
+                }
+                .headerProminence(.increased)
             }
             .contentMargins(.top, 0, for: .scrollContent)
             .scrollContentBackground(.hidden)
@@ -193,6 +232,9 @@ struct SubjectScreen: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .sheet(isPresented: $isTimeStampPickerPresented) {
+            AddTimeSlotScreen(subject: subject)
+        }
     }
 }
 

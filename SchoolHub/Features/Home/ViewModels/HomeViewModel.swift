@@ -13,18 +13,32 @@ import SwiftUI
 class HomeViewModel: ObservableObject {
     func fetchData() async throws -> String {
         do {
-            let response = try String(data: await AF.request(
-                "https://noteincatalog.ro/moisilbv/login.php",
-                method: .post,
-            ).serializingData().value, encoding: .utf8)!
+            let response = try String(
+                data: await AF.request(
+                    Auth.shared.getCredentials().requestUrl ?? "",
+                    method: .post,
+                    parameters: [
+                        "txtUser": Auth.shared.getCredentials().username,
+                        "txtPwd": Auth.shared.getCredentials().password
+                    ]
+                ).serializingData().value,
+                encoding: .utf8
+            )!
             
             if response.contains("table") {
                 return response
             } else {
-                let retryResponse = try String(data: await AF.request(
-                    "https://noteincatalog.ro/moisilbv/login.php",
-                    method: .post,
-                ).serializingData().value, encoding: .utf8)!
+                let retryResponse = try String(
+                    data: await AF.request(
+                        Auth.shared.getCredentials().requestUrl ?? "",
+                        method: .post,
+                        parameters: [
+                            "txtUser": Auth.shared.getCredentials().username,
+                            "txtPwd": Auth.shared.getCredentials().password
+                        ]
+                    ).serializingData().value,
+                    encoding: .utf8
+                )!
                 
                 return retryResponse
             }
