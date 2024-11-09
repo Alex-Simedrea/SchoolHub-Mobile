@@ -11,40 +11,44 @@ import SwiftData
 import SwiftUI
 
 class HomeViewModel: ObservableObject {
+    private func getRequestUrl(loginUrl: String) -> String {
+        return loginUrl
+            .replacingOccurrences(of: "login.php", with: "elev.php")
+    }
+    
     func fetchData() async throws -> String {
         do {
-            let response = try String(
-                data: await AF.request(
+            let loginResponse = try await AF.request(
+                Auth.shared
+                    .getCredentials().requestUrl?
+                    .replacingOccurrences(of: "login", with: "elev") ?? "",
+                method: .get
+            ).serializingResponse(using: .data).value
+            
+            let loginResponseString = String(data: loginResponse, encoding: .utf8)!
+
+            if !loginResponseString.contains("table") {
+                let retryResponse = try await AF.request(
                     Auth.shared.getCredentials().requestUrl ?? "",
                     method: .post,
                     parameters: [
                         "txtUser": Auth.shared.getCredentials().username,
                         "txtPwd": Auth.shared.getCredentials().password
+                    ],
+                    encoder: URLEncodedFormParameterEncoder.default,
+                    headers: [
+                        "Content-Type": "application/x-www-form-urlencoded"
+//                        "Cookie": (HTTPCookieStorage.shared.cookies(for: URL(string: "https://noteincatalog.ro")!)?.first?.name ?? "") + "=" + (HTTPCookieStorage.shared.cookies(for: URL(string: "https://noteincatalog.ro")!)?.first?.value ?? "")
                     ]
-                ).serializingData().value,
-                encoding: .utf8
-            )!
-            
-            if response.contains("table") {
-                return response
-            } else {
-                let retryResponse = try String(
-                    data: await AF.request(
-                        Auth.shared.getCredentials().requestUrl ?? "",
-                        method: .post,
-                        parameters: [
-                            "txtUser": Auth.shared.getCredentials().username,
-                            "txtPwd": Auth.shared.getCredentials().password
-                        ]
-                    ).serializingData().value,
-                    encoding: .utf8
-                )!
+                ).serializingData().value
                 
-                return retryResponse
+                return String(data: retryResponse, encoding: .utf8)!
+            } else {
+                return loginResponseString
             }
         } catch {
             print("Error: \(error)")
-            return "nimic1"
+            return ""
         }
     }
     
@@ -155,6 +159,10 @@ class HomeViewModel: ObservableObject {
         return subjects
     }
     
+    func getGradesFromSubjects(_ subjects: [Subject]) -> [Grade] {
+        return subjects.flatMap { $0.grades }
+    }
+    
     func getGradesCountThisWeek(forSubjects subjects: [Subject]) -> Int {
         return subjects
             .flatMap { $0.grades }
@@ -221,26 +229,38 @@ class HomeViewModel: ObservableObject {
         return sortedAbsences
     }
     
-    func getOverallAveragesFromLast30Days(forSubjects subjects: [Subject]) -> [(date: Date, value: Double)] {
-        let calendar = Calendar.current
-        let sortedGrades = subjects.flatMap { $0.grades }
+    func overallAverage(for grades: [Grade]) -> Double {
+        let gradesBySubject = Dictionary(grouping: grades, by: { $0.subject })
+        let averageBySubject = gradesBySubject.mapValues { grades in
+            Double(grades.reduce(0) { $0 + $1.value }) / Double(grades.count)
+        }
+        let totalAverage = averageBySubject.values.reduce(0, +) / Double(averageBySubject.count)
+        return averageBySubject.isEmpty ? 0 : totalAverage
+    }
+    
+    func getOverallAveragesFromLast30Days(for grades: [Grade]) -> [(date: Date, value: Double)] {
+        let sortedGrades = grades
             .sorted { $0.date < $1.date }
+            .filter {
+                $0.date >= Calendar.current.date(byAdding: .day, value: -30, to: .now)!
+            }
         
-        var averageEvolution: [(date: Date, value: Double)] = []
-        var totalGrades = 0
-        var cumulativeSum = 0
+        var previousAverage: Double?
+        var gradesUpToDate: [Grade] = []
+        
+        var result: [(date: Date, value: Double)] = []
         
         for grade in sortedGrades {
-            totalGrades += 1
-            cumulativeSum += grade.value
-            let currentAverage = Double(cumulativeSum) / Double(totalGrades)
+            gradesUpToDate.append(grade)
+            let currentAverage = overallAverage(for: gradesUpToDate)
             
-            if averageEvolution.last?.date != calendar.startOfDay(for: grade.date) {
-                averageEvolution.append((date: calendar.startOfDay(for: grade.date), value: currentAverage))
+            if previousAverage == nil || previousAverage != currentAverage {
+                result.append((date: grade.date, value: currentAverage))
+                previousAverage = currentAverage
             }
         }
         
-        return averageEvolution
+        return result
     }
     
     enum RecentItem {

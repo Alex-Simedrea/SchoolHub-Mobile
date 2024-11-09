@@ -33,9 +33,11 @@ struct AverageAbsencesCard: View {
                     .foregroundStyle(Color(.tangerine))
                     .lineStyle(StrokeStyle(lineWidth: 3))
                     .annotation(position: .top, alignment: .leading) {
-                        Text("Average per month: \(average, format: .number)")
-                            .font(.body.bold())
-                            .foregroundStyle(Color(.tangerine))
+                        Text(
+                            "Average per month: \(average.rounded(), format: .number)"
+                        )
+                        .font(.body.bold())
+                        .foregroundStyle(Color(.tangerine))
                     }
                 }
                 .chartXAxis {
@@ -52,6 +54,6 @@ struct AverageAbsencesCard: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    AverageAbsencesCard()
-//}
+// }

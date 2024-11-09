@@ -10,6 +10,10 @@ import SwiftUI
 struct LoginScreen: View {
     @ObservedObject var viewModel: LoginViewModel = .init()
     @Environment(\.dismiss) var dismiss
+    @State private var requestUrl: String = ""
+    @State private var username: String = ""
+    @State private var password: String = ""
+    @State private var isError: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -17,27 +21,45 @@ struct LoginScreen: View {
                 Section {
                     TextField(
                         "Request URL",
-                        text: $viewModel.requestUrl
+                        text: $requestUrl
                     )
                     .textInputAutocapitalization(.never)
                     TextField(
                         "Username",
-                        text: $viewModel.username
+                        text: $username
                     )
                     .textInputAutocapitalization(.never)
                     SecureField(
                         "Password",
-                        text: $viewModel.password
+                        text: $password
                     )
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
 //                    Text("\(viewModel.keychainData.username ?? "nimic")")
                 }
                 Button("Login") {
-                    viewModel.login()
-                    dismiss()
+                    Task {
+                        let success = await viewModel.login(
+                            username: username,
+                            password: password,
+                            requestUrl: requestUrl
+                        )
+                        
+                        if success {
+                            dismiss()
+                        } else {
+                            isError = true
+                        }
+                    }
                 }
                 .frame(maxWidth: .infinity)
+                
+                if isError {
+                    Section {
+                        Text("Login failed")
+                            .foregroundColor(.red)
+                    }
+                }
             }
             .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Login")

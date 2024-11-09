@@ -39,13 +39,36 @@ class GradesDetailViewModel: ObservableObject {
     }
     
     func getOverallAverageByMonth(for grades: [Grade]) -> [(month: Date, value: Double)] {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        
+        let currentMonth = calendar.component(.month, from: currentDate)
+        let currentYear = calendar.component(.year, from: currentDate)
+        let startYear = currentMonth >= 9 ? currentYear : currentYear - 1
+        
+        let startDate = calendar.date(from: DateComponents(
+            year: startYear,
+            month: 9,
+            day: 1
+        ))!
+        
+        let currentMonthDate = calendar.date(from: calendar.dateComponents([.year, .month], from: currentDate))!
+        
         let groupedByDate = Dictionary(grouping: grades) { grade in
-            Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: grade.date))!
+            calendar.date(from: calendar.dateComponents([.year, .month], from: grade.date))!
         }
         
-        let result = groupedByDate
-            .map { (month: $0.key, value: overallAverage(for: $0.value)) }
-            .sorted { $0.month > $1.month }
+        var allMonths: [Date] = []
+        var date = startDate
+        while date <= currentMonthDate {
+            allMonths.append(date)
+            date = calendar.date(byAdding: .month, value: 1, to: date)!
+        }
+        
+        let result = allMonths.map { month in
+            (month: month, value: overallAverage(for: groupedByDate[month] ?? []))
+        }
+        .sorted { $0.month > $1.month }
         
         return result
     }
@@ -104,6 +127,4 @@ class GradesDetailViewModel: ObservableObject {
         
         return result
     }
-    
-    
 }

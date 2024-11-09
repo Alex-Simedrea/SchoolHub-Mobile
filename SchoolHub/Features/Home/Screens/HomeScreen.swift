@@ -60,7 +60,12 @@ struct HomeScreen: View {
                 .headerProminence(.increased)
                 Section {
                     NavigationLink(destination: GradesDetailScreen()) {
-                        GradesCard(data: viewModel.getOverallAveragesFromLast30Days(forSubjects: subjects))
+                        GradesCard(
+                            data: viewModel
+                                .getOverallAveragesFromLast30Days(
+                                    for: viewModel
+                                        .getGradesFromSubjects(subjects))
+                        )
                     }
                 }
                 Section(header: Text("Recents")) {
@@ -92,22 +97,23 @@ struct HomeScreen: View {
             }
             .navigationTitle("Dashboard")
             .refreshable {
+                print("Refreshing")
                 Task { try await fetchAndSaveData() }
             }
             .listSectionSpacing(10)
         }
         .onAppear {
             if firstAppear {
-                Task { try await fetchAndSaveData() }
+//                Task { try await fetchAndSaveData() }
                 firstAppear = false
             }
         }
     }
 
     private func fetchAndSaveData() async throws {
-        if !Auth.shared.loggedIn {
-            return
-        }
+//        if !Auth.shared.loggedIn {
+//            return
+//        }
 
         let fetchedSubjects = try await viewModel.getData()
 

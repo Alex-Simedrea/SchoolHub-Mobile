@@ -15,8 +15,18 @@ struct SettingsScreen: View {
     @State private var json: String = ""
     @Environment(\.modelContext) private var context
     @State private var isLoginPresented: Bool = false
-    @State private var isConfirmingDeletion: Bool = false
+    @State private var isConfirmingDeleteAll: Bool = false
+    @State private var isConfirmingDeleteGradesAndAbsences: Bool = false
     @State private var isShowingFormatGuide: Bool = false
+//    @State private var cookiestore: String? = ""
+//    
+//    func getCookie() -> String {
+//        let cookie = HTTPCookieStorage.shared.cookies(
+//            for: URL(string: "https://noteincatalog.ro")!
+//        )?.first
+//        
+//        return String(describing: cookie)
+//    }
 
     var body: some View {
         NavigationStack {
@@ -39,6 +49,7 @@ struct SettingsScreen: View {
                                     grades: [],
                                     absences: [],
                                     color: subjectDTO.color,
+                                    symbolName: subjectDTO.symbolName,
                                     displayName: subjectDTO.displayName,
                                     hidden: subjectDTO.hidden)
                                 
@@ -86,6 +97,7 @@ struct SettingsScreen: View {
                             Text(viewModel.username ?? "Username")
                         }
                         Button("Log out", role: .destructive) {
+                            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
                             viewModel.logout()
                         }
                     } else {
@@ -93,6 +105,15 @@ struct SettingsScreen: View {
                             isLoginPresented = true
                         }
                     }
+//                    let cookie = HTTPCookieStorage.shared.cookies(
+//                        for: URL(string: "https://noteincatalog.ro")!
+//                    )?.first
+//                    Button("Get cookie") {
+//                        cookiestore = String(describing: getCookie())
+//                    }
+//                    Text(cookiestore ?? "no cookie")
+//                    Text("\(String(describing: HTTPCookieStorage.shared.cookies(for: URL(string: "https://noteincatalog.ro")!)) ?? "no cookie")")
+//                    let _ = print(Auth.shared.getCredentials().cookie ?? "no cookie")
                 }
                 .headerProminence(.increased)
                 Button {
@@ -114,7 +135,30 @@ struct SettingsScreen: View {
                     }
                 }
                 Button(role: .destructive) {
-                    isConfirmingDeletion = true
+                    isConfirmingDeleteGradesAndAbsences = true
+                } label: {
+                    HStack {
+                        Image(systemName: "trash")
+                        Text("Delete grades and absences")
+                    }
+                }
+                .confirmationDialog(
+                    "Are you sure you want to delete all grades and absences?",
+                    isPresented: $isConfirmingDeleteGradesAndAbsences)
+                {
+                    Button("Delete", role: .destructive) {
+                        for subject in subjects {
+                            for grade in subject.grades {
+                                context.delete(grade)
+                            }
+                            for absence in subject.absences {
+                                context.delete(absence)
+                            }
+                        }
+                    }
+                }
+                Button(role: .destructive) {
+                    isConfirmingDeleteAll = true
                 } label: {
                     HStack {
                         Image(systemName: "trash")
@@ -123,10 +167,12 @@ struct SettingsScreen: View {
                 }
                 .confirmationDialog(
                     "Are you sure you want to delete all data?",
-                    isPresented: $isConfirmingDeletion)
+                    isPresented: $isConfirmingDeleteAll)
                 {
                     Button("Delete", role: .destructive) {
-                        try? context.delete(model: Subject.self)
+                        for subject in subjects {
+                            context.delete(subject)
+                        }
                     }
                 }
             }
@@ -138,38 +184,38 @@ struct SettingsScreen: View {
                 NavigationStack {
                     ScrollView {
                         Text("""
-                    {
-                        "name": "String (Full name of the subject)",
-                        "displayName": "String (Short/display name of the subject)",
-                        "hidden": "Boolean (true/false)",
-                        "color": "String (one of: red, blue, green, yellow, purple, orange, pink, mint, teal, cyan, indigo, brown)",
-                        "symbolName": "String (SF Symbol name)",
-                        "id": "String (UUID format)",
-                        "timeSlots": [
-                            {
-                                "id": "String (UUID format)",
-                                "weekday": "Integer (1-7, where 1 is Monday)",
-                                "startTime": "String (ISO 8601 date format)",
-                                "endTime": "String (ISO 8601 date format)",
-                                "location": "String (can be empty)"
-                            }
-                        ],
-                        "grades": [
-                            {
-                                "id": "String (UUID format)",
-                                "value": "Integer",
-                                "date": "String (ISO 8601 date format)"
-                            }
-                        ],
-                        "absences": [
-                            {
-                                "id": "String (UUID format)",
-                                "date": "String (ISO 8601 date format)",
-                                "excused": "Boolean (true/false)"
-                            }
-                        ]
-                    }
-                    """)
+                        {
+                            "name": "String (Full name of the subject)",
+                            "displayName": "String (Short/display name of the subject)",
+                            "hidden": "Boolean (true/false)",
+                            "color": "String (one of: red, blue, green, yellow, purple, orange, pink, mint, teal, cyan, indigo, brown)",
+                            "symbolName": "String (SF Symbol name)",
+                            "id": "String (UUID format)",
+                            "timeSlots": [
+                                {
+                                    "id": "String (UUID format)",
+                                    "weekday": "Integer (1-7, where 1 is Monday)",
+                                    "startTime": "String (ISO 8601 date format)",
+                                    "endTime": "String (ISO 8601 date format)",
+                                    "location": "String (can be empty)"
+                                }
+                            ],
+                            "grades": [
+                                {
+                                    "id": "String (UUID format)",
+                                    "value": "Integer",
+                                    "date": "String (ISO 8601 date format)"
+                                }
+                            ],
+                            "absences": [
+                                {
+                                    "id": "String (UUID format)",
+                                    "date": "String (ISO 8601 date format)",
+                                    "excused": "Boolean (true/false)"
+                                }
+                            ]
+                        }
+                        """)
                         .padding()
                     }
                     .toolbar {

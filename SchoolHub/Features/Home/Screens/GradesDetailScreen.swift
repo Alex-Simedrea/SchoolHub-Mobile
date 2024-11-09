@@ -175,7 +175,7 @@ struct AverageGradesByMonthChart: View {
             .foregroundStyle(Color(.blue))
             .lineStyle(StrokeStyle(lineWidth: 3))
             .annotation(position: .top, alignment: .leading) {
-                Text("Average grades per month: \(average, format: .number)")
+                Text("Average grades per month: \(average.rounded(), format: .number)")
                     .font(.body.bold())
                     .foregroundStyle(Color(.blue))
             }
@@ -349,7 +349,7 @@ struct GradesAverageEvolutionCard: View {
             return "You have 1 less point this month compared to last month."
         default:
             return
-                "You have \(abs(difference)) less points this month compared to last month."
+                "You have \(String(format: "%.2f", abs(difference))) less points this month compared to last month."
         }
     }
 
@@ -412,7 +412,7 @@ struct GradesAverageEvolutionCard: View {
                         Text(
                             averageLastMonth == 0
                                 ? "No grades"
-                                : "\(String(format: "%.2f", averageThisMonth))"
+                                : "\(String(format: "%.2f", averageLastMonth))"
                         )
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -495,7 +495,7 @@ struct GradesDetailScreen: View {
                                 viewModel
                                     .overallAverage(for: grades) == 0
                                     ? "No grades"
-                                    : "\(viewModel.overallAverage(for: grades), format: .number)"
+                                    : "\(String(format: "%.2f", viewModel.overallAverage(for: grades)))"
                             )
                             .font(.title2.bold())
                         }

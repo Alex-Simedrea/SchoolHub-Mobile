@@ -57,10 +57,10 @@ struct GradesCard: View {
 //                "Cupertino": Circle().strokeBorder(lineWidth: lineWidth)
 //            ])
             .chartXAxis {
-                AxisMarks(values: .stride(by: .day)) { _ in
+                AxisMarks(values: .stride(by: .weekOfYear)) { _ in
                     AxisTick()
                     AxisGridLine()
-                    AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+                    AxisValueLabel()
                 }
             }
 //            .chartYAxis(.hidden)
