@@ -342,9 +342,9 @@ struct GradesAverageEvolutionCard: View {
             return "You have the same average this month as last month."
         case 1:
             return "You have 1 more point this month compared to last month."
-        case let x where x > 1:
+        case let x where x > 1 || (x > 0 && x < 1):
             return
-                "You have \(x) more points this month compared to last month."
+                "You have \(String(format: "%.2f", abs(x))) more points this month compared to last month."
         case -1:
             return "You have 1 less point this month compared to last month."
         default:

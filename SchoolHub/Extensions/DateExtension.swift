@@ -39,4 +39,10 @@ extension Date {
         let adjustedWeekday = weekdayNumber == 1 ? 7 : weekdayNumber - 1
         return Weekday(rawValue: adjustedWeekday) ?? .monday
     }
+    
+    func getDateWithTime(from time: Date) -> Date {
+        let calendar = Calendar.current
+        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+        return calendar.date(bySettingHour: timeComponents.hour!, minute: timeComponents.minute!, second: 0, of: self)!
+    }
 }

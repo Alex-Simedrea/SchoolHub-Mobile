@@ -10,38 +10,57 @@ import SwiftUI
 import WidgetKit
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+    var modelContext: ModelContext
+
+    func placeholder(in context: Context) -> TimetableEntry {
+        TimetableEntry(date: Date())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+    func getSnapshot(in context: Context, completion: @escaping (TimetableEntry) -> ()) {
+        let entry = TimetableEntry(date: Date())
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
+        do {
+            let timeSlots = try modelContext.fetch(FetchDescriptor<TimeSlot>())
+            let currentTimeSlot = timeSlots.currentOrNextTimeSlot
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
+            if let currentTimeSlot = currentTimeSlot {
+                let nextOccurrence = currentTimeSlot.nextOccurrence
+                var updateDate: Date
+                if nextOccurrence.start < .now {
+                    updateDate = nextOccurrence.end
+                } else {
+                    updateDate = nextOccurrence.start
+                }
+
+                let timeline = Timeline(entries: [TimetableEntry(date: .now)], policy: .after(updateDate))
+                completion(timeline)
+                return
+            }
+
+            let timeline = Timeline(
+                entries: [TimetableEntry(date: .now)],
+                policy: .after(
+                    Calendar.current.date(byAdding: .hour, value: 24, to: .now)!
+                )
+            )
+            completion(timeline)
+        } catch {
+            let timeline = Timeline(
+                entries: [TimetableEntry(date: .now)],
+                policy: .after(
+                    Calendar.current.date(byAdding: .hour, value: 24, to: .now)!
+                )
+            )
+            completion(timeline)
         }
-
-        let timeline = Timeline(entries: entries, policy: .never)
-        completion(timeline)
     }
-
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct TimetableEntry: TimelineEntry {
     let date: Date
-    let emoji: String
 }
 
 struct WidgetsEntryView: View {
@@ -49,7 +68,17 @@ struct WidgetsEntryView: View {
     @Query private var subjects: [Subject]
     @Query private var timeSlots: [TimeSlot]
     @Environment(\.widgetFamily) private var family
+    @Environment(\.widgetRenderingMode) private var renderingMode
+
+    var currentTimeSlot: TimeSlot? {
+        timeSlots.currentOrNextTimeSlot
+    }
+
     var currentDay: Int {
+        if let currentTimeSlot = currentTimeSlot {
+            return currentTimeSlot.weekday.rawValue
+        }
+
         let day = Date.now.weekDay.rawValue
         if day > 5 {
             return 1
@@ -68,6 +97,7 @@ struct WidgetsEntryView: View {
         VStack(alignment: .leading) {
             Text("\(Weekday(rawValue: currentDay)?.name ?? "")")
                 .font(.headline.bold())
+//            Text(entry.date, format: .dateTime)
             ForEach(timeSlots
                 .filter { $0.weekday.rawValue == currentDay }
                 .sorted { $0.isEarlier(than: $1) },
@@ -86,6 +116,30 @@ struct WidgetsEntryView: View {
                                 .foregroundStyle(.white.opacity(0.8))
                         }
                     }
+                    if timeSlot == currentTimeSlot {
+                        if let nextOccurrence = currentTimeSlot?.nextOccurrence {
+                            if !(nextOccurrence.start < .now) {
+                                Text("•")
+                                    .font(.callout.bold())
+                                    .foregroundStyle(.secondary)
+                                Text("Next Up")
+                                    .font(.callout.bold())
+                                    .foregroundStyle(.secondary)
+                            } else {
+                                Text("•")
+                                    .font(.callout.bold())
+                                    .foregroundStyle(.secondary)
+                                Text(
+                                    nextOccurrence.end,
+                                    style: .relative
+                                )
+                                .font(.callout.bold())
+                                .foregroundStyle(.secondary)
+                                .contentTransition(.interpolate)
+                            }
+                        }
+                    }
+
                     Spacer()
                     VStack(alignment: .trailing) {
                         Text(timeSlot.startTime.formatted(.dateTime.hour().minute()))
@@ -99,7 +153,9 @@ struct WidgetsEntryView: View {
                 .padding(.vertical, 4)
                 .padding(.horizontal)
                 .background(
-                    (timeSlot.subject?.color.color ?? Color.blue).gradient
+                    (timeSlot.subject?.color.color ?? Color.blue)
+                        .gradient
+                        .opacity(renderingMode == .accented ? 0.2 : 1)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             }
@@ -110,23 +166,36 @@ struct WidgetsEntryView: View {
 }
 
 struct Widgets: Widget {
+    @Environment(\.modelContext) private var modelContext
     let kind: String = "Widgets"
+    var container: ModelContainer
+    
+    init() {
+        do {
+            container = try .init(for: Subject.self, configurations: .init())
+        } catch {
+            fatalError("failed to create model container")
+        }
+    }
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        StaticConfiguration(
+            kind: kind,
+            provider: Provider(modelContext: container.mainContext)
+        ) { entry in
             if #available(iOS 17.0, *) {
                 WidgetsEntryView(entry: entry)
                     .containerBackground(.fill.tertiary, for: .widget)
-                    .modelContainer(for: [Subject.self])
+                    .modelContainer(container)
             } else {
                 WidgetsEntryView(entry: entry)
                     .padding()
                     .background()
-                    .modelContainer(for: [Subject.self])
+                    .modelContainer(container)
             }
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Timetable Widget")
+        .description("Displays your timetable for the current day.")
         .supportedFamilies([.systemLarge, .systemExtraLarge])
     }
 }
@@ -134,6 +203,5 @@ struct Widgets: Widget {
 #Preview(as: .systemSmall) {
     Widgets()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    TimetableEntry(date: .now)
 }

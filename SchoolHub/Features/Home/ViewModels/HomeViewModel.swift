@@ -160,28 +160,30 @@ class HomeViewModel: ObservableObject {
     }
     
     func getGradesFromSubjects(_ subjects: [Subject]) -> [Grade] {
-        return subjects.flatMap { $0.grades }
+        return subjects.flatMap { $0.unwrappedGrades }
     }
     
     func getGradesCountThisWeek(forSubjects subjects: [Subject]) -> Int {
         return subjects
-            .flatMap { $0.grades }
+            .flatMap { $0.unwrappedGrades }
             .filter { Calendar.current.isDateBetweenThisMondayAndNow(date: $0.date) }
             .count
     }
     
     func getGradesCountThisMonth(forSubjects subjects: [Subject]) -> Int {
         return subjects
-            .flatMap { $0.grades }
+            .flatMap { $0.unwrappedGrades }
             .filter { Calendar.current.isDateBetweenStartOfMonthAndNow(date: $0.date) }
             .count
     }
     
     func getOverallAverage(forSubjects subjects: [Subject]) -> Double {
         let subjectAverages = subjects.compactMap { subject -> Double? in
-            guard !subject.grades.isEmpty else { return nil }
-            let total = subject.grades.reduce(0) { $0 + $1.value }
-            return Double(total) / Double(subject.grades.count)
+            guard subject.unwrappedGrades.isEmpty else {
+                return nil
+            }
+            let total = subject.unwrappedGrades.reduce(0) { $0 + $1.value }
+            return Double(total) / Double(subject.unwrappedGrades.count)
         }
         
         let overallAverage = subjectAverages.reduce(0, +) / Double(subjectAverages.count)
@@ -190,21 +192,21 @@ class HomeViewModel: ObservableObject {
     
     func getAbsencesCountThisWeek(forSubjects subjects: [Subject]) -> Int {
         return subjects
-            .flatMap { $0.absences }
+            .flatMap { $0.unwrappedAbsences }
             .filter { Calendar.current.isDateBetweenThisMondayAndNow(date: $0.date) }
             .count
     }
     
     func getAbsencesCountThisMonth(forSubjects subjects: [Subject]) -> Int {
         return subjects
-            .flatMap { $0.absences }
+            .flatMap { $0.unwrappedAbsences }
             .filter { Calendar.current.isDateBetweenStartOfMonthAndNow(date: $0.date) }
             .count
     }
     
     func getAbsencesCountThisSchoolYear(forSubjects subjects: [Subject]) -> Int {
         return subjects
-            .flatMap { $0.absences }
+            .flatMap { $0.unwrappedAbsences }
             .filter { Calendar.current.isDateInCurrentSchoolYear(date: $0.date) }
             .count
     }
@@ -215,7 +217,7 @@ class HomeViewModel: ObservableObject {
         let last30Days = calendar.date(byAdding: .day, value: -30, to: now)!
         
         let absencesInLast30Days = subjects
-            .flatMap { $0.absences }
+            .flatMap { $0.unwrappedAbsences }
             .filter { $0.date >= last30Days && $0.date <= now }
             .reduce(into: [Date: Int]()) { result, absence in
                 let startOfDay = calendar.startOfDay(for: absence.date)
@@ -284,10 +286,10 @@ class HomeViewModel: ObservableObject {
     
     func getRecentItems(fromSubjects subjects: [Subject], limit: Int = 5) -> [RecentItem] {
         let grades = subjects
-            .flatMap { $0.grades }
+            .flatMap { $0.unwrappedGrades }
             .sorted { $0.date < $1.date }
         let absences = subjects
-            .flatMap { $0.absences }
+            .flatMap { $0.unwrappedAbsences }
             .sorted { $0.date < $1.date }
 
         let gradeItems = grades.map { RecentItem.grade($0) }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct AddTimeSlotScreen: View {
     @State var subject: Subject
@@ -35,7 +36,7 @@ struct AddTimeSlotScreen: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        subject.timeSlots
+                        subject.timeSlots?
                             .append(
                                 .init(
                                     weekday: weekday,
@@ -44,6 +45,9 @@ struct AddTimeSlotScreen: View {
                                     location: location.isEmpty ? nil : location
                                 )
                             )
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            WidgetCenter.shared.reloadAllTimelines()
+                        }
                         dismiss()
                     }
                 }

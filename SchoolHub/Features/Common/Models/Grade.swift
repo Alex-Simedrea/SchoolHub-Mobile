@@ -10,9 +10,9 @@ import SwiftData
 
 @Model
 class Grade {
-    @Attribute(.unique) var id = UUID()
-    var value: Int
-    var date: Date
+//    var id = UUID()
+    var value: Int = 10
+    var date: Date = Date.now
     @Relationship(inverse: \Subject.grades) var subject: Subject?
     
     init(value: Int, date: Date) {
@@ -21,9 +21,13 @@ class Grade {
     }
 }
 
-extension [Grade] {
+extension [Grade]? {
     var average: Double {
-        guard !self.isEmpty else { return 0 }
+        guard let self = self, !self.isEmpty else { return 0 }
         return Double(self.reduce(0) { $0 + $1.value }) / Double(self.count)
+    }
+    
+    var count: Int {
+        return self?.count ?? 0
     }
 }

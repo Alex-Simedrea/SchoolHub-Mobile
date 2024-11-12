@@ -19,12 +19,12 @@ struct SettingsScreen: View {
     @State private var isConfirmingDeleteGradesAndAbsences: Bool = false
     @State private var isShowingFormatGuide: Bool = false
 //    @State private var cookiestore: String? = ""
-//    
+//
 //    func getCookie() -> String {
 //        let cookie = HTTPCookieStorage.shared.cookies(
 //            for: URL(string: "https://noteincatalog.ro")!
 //        )?.first
-//        
+//
 //        return String(describing: cookie)
 //    }
 
@@ -44,35 +44,67 @@ struct SettingsScreen: View {
                             try context.delete(model: Subject.self)
                             
                             for subjectDTO in subjectsDTO {
-                                let subject = Subject(
-                                    name: subjectDTO.name,
-                                    grades: [],
-                                    absences: [],
-                                    color: subjectDTO.color,
-                                    symbolName: subjectDTO.symbolName,
-                                    displayName: subjectDTO.displayName,
-                                    hidden: subjectDTO.hidden)
-                                
-                                for gradeDTO in subjectDTO.grades {
-                                    let grade = Grade(
-                                        value: gradeDTO.value, date: gradeDTO.date)
-                                    subject.grades.append(grade)
+                                if let existingSubject = subjects.first(where: { $0.name == subjectDTO.name }) {
+                                    for grade in existingSubject.unwrappedGrades {
+                                        context.delete(grade)
+                                    }
+                                    
+                                    if let grades = subjectDTO.grades {
+                                        for grade in grades {
+                                            let grade = Grade(
+                                                value: grade.value, date: grade.date)
+                                            existingSubject.grades?.append(grade)
+                                        }
+                                    }
+                                    
+                                    for absence in existingSubject.unwrappedAbsences {
+                                        context.delete(absence)
+                                    }
+                                    
+                                    if let absences = subjectDTO.absences {
+                                        for absence in absences {
+                                            let absence = Absence(
+                                                date: absence.date, excused: absence.excused)
+                                            existingSubject.absences?.append(absence)
+                                        }
+                                    }
+                                } else {
+                                    let subject = Subject(
+                                        name: subjectDTO.name,
+                                        grades: [],
+                                        absences: [],
+                                        color: subjectDTO.color,
+                                        symbolName: subjectDTO.symbolName,
+                                        displayName: subjectDTO.displayName,
+                                        hidden: subjectDTO.hidden)
+                                    
+                                    if let grades = subjectDTO.grades {
+                                        for gradeDTO in grades {
+                                            let grade = Grade(
+                                                value: gradeDTO.value, date: gradeDTO.date)
+                                            subject.grades?.append(grade)
+                                        }
+                                    }
+                                    
+                                    if let absences = subjectDTO.absences {
+                                        for absenceDTO in absences {
+                                            let absence = Absence(
+                                                date: absenceDTO.date,
+                                                excused: absenceDTO.excused)
+                                            subject.absences?.append(absence)
+                                        }
+                                    }
+                                    
+                                    if let timeSlots = subjectDTO.timeSlots {
+                                        for timeSlotDTO in timeSlots {
+                                            let timeSlot = TimeSlot(
+                                                weekday: timeSlotDTO.weekday, startTime: timeSlotDTO.startTime, endTime: timeSlotDTO.endTime)
+                                            subject.timeSlots?.append(timeSlot)
+                                        }
+                                    }
+                                    
+                                    context.insert(subject)
                                 }
-                                
-                                for absenceDTO in subjectDTO.absences {
-                                    let absence = Absence(
-                                        date: absenceDTO.date,
-                                        excused: absenceDTO.excused)
-                                    subject.absences.append(absence)
-                                }
-                                
-                                for timeSlotDTO in subjectDTO.timeSlots {
-                                    let timeSlot = TimeSlot(
-                                        weekday: timeSlotDTO.weekday, startTime: timeSlotDTO.startTime, endTime: timeSlotDTO.endTime)
-                                    subject.timeSlots.append(timeSlot)
-                                }
-                                
-                                context.insert(subject)
                             }
                             
                         } catch {
@@ -94,11 +126,11 @@ struct SettingsScreen: View {
                                 .resizable()
                                 .frame(width: 40, height: 40)
                                 .foregroundStyle(.gray)
-                            Text(viewModel.username ?? "Username")
+                            Text(Auth.shared.getCredentials().username ?? "Username")
                         }
                         Button("Log out", role: .destructive) {
                             HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-                            viewModel.logout()
+                            Auth.shared.logout()
                         }
                     } else {
                         Button("Login") {
@@ -148,10 +180,11 @@ struct SettingsScreen: View {
                 {
                     Button("Delete", role: .destructive) {
                         for subject in subjects {
-                            for grade in subject.grades {
+                            for grade in subject.unwrappedGrades {
                                 context.delete(grade)
                             }
-                            for absence in subject.absences {
+                            
+                            for absence in subject.unwrappedAbsences {
                                 context.delete(absence)
                             }
                         }

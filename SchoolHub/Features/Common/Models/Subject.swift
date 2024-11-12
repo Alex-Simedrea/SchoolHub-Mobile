@@ -39,25 +39,37 @@ enum SubjectColor: String, Codable, Identifiable, CaseIterable {
         case .brown: return .brown
         }
     }
-    
+
     var name: String {
         rawValue.capitalized
     }
-    
+
     var id: String { name }
 }
 
 @Model
 class Subject {
-    @Attribute(.unique) var id = UUID()
-    var name: String
-    @Relationship(deleteRule: .cascade) var grades: [Grade]
-    @Relationship(deleteRule: .cascade) var absences: [Absence]
-    var color: SubjectColor
-    var symbolName: String
-    var displayName: String
-    var hidden: Bool
-    @Relationship(deleteRule: .cascade) var timeSlots: [TimeSlot] = []
+//    var id = UUID()
+    var name: String = ""
+    @Relationship(deleteRule: .cascade) var grades: [Grade]? = []
+    @Relationship(deleteRule: .cascade) var absences: [Absence]? = []
+    var color: SubjectColor = SubjectColor.blue
+    var symbolName: String = "graduationcap.fill"
+    var displayName: String = ""
+    var hidden: Bool = false
+    @Relationship(deleteRule: .cascade) var timeSlots: [TimeSlot]? = []
+    
+    var unwrappedGrades: [Grade] {
+        grades ?? []
+    }
+    
+    var unwrappedAbsences: [Absence] {
+        absences ?? []
+    }
+    
+    var unwrappedTimeSlots: [TimeSlot] {
+        timeSlots ?? []
+    }
 
     init(
         name: String,
@@ -79,92 +91,3 @@ class Subject {
         self.timeSlots = timeSlots
     }
 }
-
-extension Subject {
-    func gradesAverage() -> Double {
-        guard grades.count > 0 else { return 0 }
-        return Double(grades.map(\.value).reduce(0, +)) / Double(grades.count)
-    }
-
-    func gradesCount() -> Int {
-        grades.count
-    }
-
-    func excusedAbsencesCount() -> Int {
-        absences.filter(\.excused).count
-    }
-
-    func unexcusedAbsencesCount() -> Int {
-        absences.filter { !$0.excused }.count
-    }
-
-    func absencesCount() -> Int {
-        absences.count
-    }
-}
-
-//    @Published var subjects: [Subject] = []
-//    = [
-//        Subject(
-//            name: "Matematica",
-//            grades: [
-//                Grade(
-//                    value: 10,
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-09-14T00:00:00+0000"
-//                    )!
-//                ),
-//                Grade(
-//                    value: 9,
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-09-30T00:00:00+0000"
-//                    )!
-//                )
-//            ],
-//            absences: [
-//                Absence(
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-09-15T00:00:00+0000"
-//                    )!,
-//                    excused: false
-//                )
-//            ]
-//        ),
-//        Subject(
-//            name: "Fizica",
-//            grades: [
-//                Grade(
-//                    value: 8,
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-09-14T00:00:00+0000"
-//                    )!
-//                )
-//            ],
-//            absences: []
-//        ),
-//        Subject(
-//            name: "Informatica",
-//            grades: [
-//                Grade(
-//                    value: 10,
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-10-10T00:00:00+0000"
-//                    )!
-//                ),
-//                Grade(
-//                    value: 9,
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-10-01T00:00:00+0000"
-//                    )!
-//                )
-//            ],
-//            absences: [
-//                Absence(
-//                    date: ISO8601DateFormatter().date(
-//                        from: "2024-10-02T00:00:00+0000"
-//                    )!,
-//                    excused: true
-//                )
-//            ]
-//        )
-//    ]

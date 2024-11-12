@@ -28,7 +28,7 @@ struct HomeScreen: View {
                             String(
                                 format: "%.2f",
                                 viewModel
-                                    .getOverallAverage(forSubjects: subjects)
+                                    .overallAverage(for: viewModel.getGradesFromSubjects(subjects))
                             ),
                             String(viewModel.getGradesCountThisWeek(forSubjects: subjects)),
                             String(viewModel.getGradesCountThisMonth(forSubjects: subjects)),
@@ -96,6 +96,18 @@ struct HomeScreen: View {
                 .headerProminence(.increased)
             }
             .navigationTitle("Dashboard")
+            .toolbar {
+                if ProcessInfo.processInfo.isOnMac {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                            Task { try await fetchAndSaveData() }
+                        } label: {
+                            Image(systemName: "arrow.clockwise")
+                                .foregroundStyle(.foreground)
+                        }
+                    }
+                }
+            }
             .refreshable {
                 print("Refreshing")
                 Task { try await fetchAndSaveData() }
@@ -104,16 +116,16 @@ struct HomeScreen: View {
         }
         .onAppear {
             if firstAppear {
-//                Task { try await fetchAndSaveData() }
+                Task { try await fetchAndSaveData() }
                 firstAppear = false
             }
         }
     }
 
     private func fetchAndSaveData() async throws {
-//        if !Auth.shared.loggedIn {
-//            return
-//        }
+        if !Auth.shared.loggedIn {
+            return
+        }
 
         let fetchedSubjects = try await viewModel.getData()
 
@@ -127,12 +139,14 @@ struct HomeScreen: View {
             )
 
             if let subject = try context.fetch(descriptor).first {
-                for grade in subject.grades {
+                for grade in subject.unwrappedGrades {
                     context.delete(grade)
                 }
-                for absence in subject.absences {
+
+                for absence in subject.unwrappedAbsences {
                     context.delete(absence)
                 }
+
                 subject.grades = fetchedSubject.grades
                 subject.absences = fetchedSubject.absences
             } else {

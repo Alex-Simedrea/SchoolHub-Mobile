@@ -10,12 +10,20 @@
 		FA107CBE2CC3C0C60097138E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA107CBD2CC3C0C60097138E /* Alamofire */; };
 		FA2AE18B2CD42C7E00E09E41 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA2AE18A2CD42C7E00E09E41 /* SFSymbolsPicker */; };
 		FA2AE18E2CD43A4400E09E41 /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA2AE18D2CD43A4400E09E41 /* SymbolPicker */; };
+		FA49E22A2CE0EEF200ADE397 /* SchoolHubWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA71410E2CD76FA300CA5F8A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410D2CD76FA200CA5F8A /* WidgetKit.framework */; };
 		FA7141102CD76FA300CA5F8A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410F2CD76FA300CA5F8A /* SwiftUI.framework */; };
 		FA71411D2CD76FA400CA5F8A /* WidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FA49E2282CE0EEF200ADE397 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA6C53D62CBB038900A63670 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA49E21C2CE0EEF100ADE397;
+			remoteInfo = "SchoolHubWatch Watch App";
+		};
 		FA71411B2CD76FA400CA5F8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA6C53D62CBB038900A63670 /* Project object */;
@@ -32,6 +40,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				FA49E22A2CE0EEF200ADE397 /* SchoolHubWatch Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SchoolHubWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6C53DE2CBB038900A63670 /* SchoolHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA71410D2CD76FA200CA5F8A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -68,6 +78,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FA2168622CDFBDDC00B94EA0 /* Exceptions for "SchoolHub" folder in "SchoolHub" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FA6C53DD2CBB038900A63670 /* SchoolHub */;
+		};
+		FA49E2372CE0F21E00ADE397 /* Exceptions for "SchoolHub" folder in "SchoolHubWatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/CalendarExtension.swift,
+				Extensions/DateExtension.swift,
+				Extensions/DoubleExtension.swift,
+				Features/Common/Models/Absence.swift,
+				Features/Common/Models/CodableDTOs.swift,
+				Features/Common/Models/Grade.swift,
+				Features/Common/Models/Subject.swift,
+				Features/Common/Models/TimeSlot.swift,
+				Features/Common/Models/Weekday.swift,
+			);
+			target = FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */;
+		};
 		FA7141212CD76FA400CA5F8A /* Exceptions for "Widgets" folder in "WidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -92,10 +124,17 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		FA49E21E2CE0EEF100ADE397 /* SchoolHubWatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SchoolHubWatch Watch App";
+			sourceTree = "<group>";
+		};
 		FA6C53E02CBB038900A63670 /* SchoolHub */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				FA2168622CDFBDDC00B94EA0 /* Exceptions for "SchoolHub" folder in "SchoolHub" target */,
 				FADFE9A92CD77C8D00E3EB71 /* Exceptions for "SchoolHub" folder in "WidgetsExtension" target */,
+				FA49E2372CE0F21E00ADE397 /* Exceptions for "SchoolHub" folder in "SchoolHubWatch Watch App" target */,
 			);
 			path = SchoolHub;
 			sourceTree = "<group>";
@@ -111,6 +150,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FA49E21A2CE0EEF100ADE397 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA6C53DB2CBB038900A63670 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -147,6 +193,7 @@
 			children = (
 				FA6C53E02CBB038900A63670 /* SchoolHub */,
 				FA7141112CD76FA300CA5F8A /* Widgets */,
+				FA49E21E2CE0EEF100ADE397 /* SchoolHubWatch Watch App */,
 				FA107CBF2CC3C0D90097138E /* Frameworks */,
 				FA6C53DF2CBB038900A63670 /* Products */,
 				FADFE9A22CD77BD500E3EB71 /* WidgetsExtension.entitlements */,
@@ -158,6 +205,7 @@
 			children = (
 				FA6C53DE2CBB038900A63670 /* SchoolHub.app */,
 				FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */,
+				FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,6 +213,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA49E22D2CE0EEF200ADE397 /* Build configuration list for PBXNativeTarget "SchoolHubWatch Watch App" */;
+			buildPhases = (
+				FA49E2192CE0EEF100ADE397 /* Sources */,
+				FA49E21A2CE0EEF100ADE397 /* Frameworks */,
+				FA49E21B2CE0EEF100ADE397 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FA49E21E2CE0EEF100ADE397 /* SchoolHubWatch Watch App */,
+			);
+			name = "SchoolHubWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "SchoolHubWatch Watch App";
+			productReference = FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 		FA6C53DD2CBB038900A63670 /* SchoolHub */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA6C53EC2CBB038A00A63670 /* Build configuration list for PBXNativeTarget "SchoolHub" */;
@@ -180,6 +250,7 @@
 			);
 			dependencies = (
 				FA71411C2CD76FA400CA5F8A /* PBXTargetDependency */,
+				FA49E2292CE0EEF200ADE397 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FA6C53E02CBB038900A63670 /* SchoolHub */,
@@ -226,6 +297,9 @@
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
+					FA49E21C2CE0EEF100ADE397 = {
+						CreatedOnToolsVersion = 16.1;
+					};
 					FA6C53DD2CBB038900A63670 = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -256,11 +330,19 @@
 			targets = (
 				FA6C53DD2CBB038900A63670 /* SchoolHub */,
 				FA71410B2CD76FA200CA5F8A /* WidgetsExtension */,
+				FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FA49E21B2CE0EEF100ADE397 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA6C53DC2CBB038900A63670 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -278,6 +360,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FA49E2192CE0EEF100ADE397 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA6C53DA2CBB038900A63670 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -295,6 +384,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FA49E2292CE0EEF200ADE397 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */;
+			targetProxy = FA49E2282CE0EEF200ADE397 /* PBXContainerItemProxy */;
+		};
 		FA71411C2CD76FA400CA5F8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FA71410B2CD76FA200CA5F8A /* WidgetsExtension */;
@@ -303,6 +397,72 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		FA49E22B2CE0EEF200ADE397 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "SchoolHubWatch Watch App/SchoolHubWatch Watch App.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SchoolHubWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 4ZW39N29FM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SchoolHubWatch-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SchoolHubWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = ro.attractivestar.SchoolHubMobile;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Debug;
+		};
+		FA49E22C2CE0EEF200ADE397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "SchoolHubWatch Watch App/SchoolHubWatch Watch App.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SchoolHubWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 4ZW39N29FM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SchoolHubWatch-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SchoolHubWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = ro.attractivestar.SchoolHubMobile;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Release;
+		};
 		FA6C53EA2CBB038A00A63670 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -438,6 +598,7 @@
 				DEVELOPMENT_TEAM = 4ZW39N29FM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SchoolHub/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SchoolHub;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -456,7 +617,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -477,6 +638,7 @@
 				DEVELOPMENT_TEAM = 4ZW39N29FM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SchoolHub/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SchoolHub;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -495,7 +657,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -563,6 +725,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FA49E22D2CE0EEF200ADE397 /* Build configuration list for PBXNativeTarget "SchoolHubWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA49E22B2CE0EEF200ADE397 /* Debug */,
+				FA49E22C2CE0EEF200ADE397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FA6C53D92CBB038900A63670 /* Build configuration list for PBXProject "SchoolHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

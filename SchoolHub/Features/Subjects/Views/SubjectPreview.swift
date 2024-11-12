@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SubjectPreview: View {
     @State var subject: Subject
-    
+
     var body: some View {
         NavigationStack {
             List {
@@ -20,7 +20,7 @@ struct SubjectPreview: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 32)
                             .foregroundStyle(subject.color.color)
-                        //                    .padding(12)
+                            //                    .padding(12)
                             .fontWeight(.semibold)
                         Text(subject.displayName)
                             .font(.title.bold())
@@ -30,7 +30,7 @@ struct SubjectPreview: View {
                     .frame(maxWidth: .infinity)
                     .listRowBackground(Color(.clear))
                 }
-                
+
                 Section {
                     LazyVGrid(columns: [
                         GridItem(.flexible(), spacing: 12),
@@ -40,14 +40,14 @@ struct SubjectPreview: View {
                             symbolName: "chart.bar.xaxis",
                             title: "Average",
                             value: subject.grades.average == 0
-                            ? "N/A"
-                            : subject.grades.average.gradeFormatted,
+                                ? "N/A"
+                                : subject.grades.average.gradeFormatted,
                             color: subject.color.color
                         )
                         StatCard(
                             symbolName: "number",
                             title: "Grades",
-                            value: String(subject.grades.count),
+                            value: String(subject.grades?.count ?? 0),
                             color: subject.color.color
                         )
                         StatCard(
@@ -67,16 +67,16 @@ struct SubjectPreview: View {
                     .listRowBackground(Color(.clear))
                     .listRowInsets(.init())
                 }
-                
+
                 Section("Grades") {
-                    if subject.grades.isEmpty {
+                    if let grades = subject.grades, grades.isEmpty {
                         Text("No grades")
                             .font(.body)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     ForEach(
-                        subject.grades.sorted { $0.date > $1.date },
+                        subject.grades?.sorted { $0.date > $1.date } ?? [],
                         id: \.id
                     ) { grade in
                         HStack {
@@ -90,16 +90,16 @@ struct SubjectPreview: View {
                     }
                 }
                 .headerProminence(.increased)
-                
+
                 Section("Absences") {
-                    if subject.absences.isEmpty {
+                    if let absences = subject.absences, absences.isEmpty {
                         Text("No absences")
                             .font(.body)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     ForEach(
-                        subject.absences.sorted { $0.date > $1.date },
+                        subject.absences?.sorted { $0.date > $1.date } ?? [],
                         id: \.id
                     ) { absence in
                         HStack {
@@ -133,6 +133,6 @@ struct SubjectPreview: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    SubjectPreview()
-//}
+// }

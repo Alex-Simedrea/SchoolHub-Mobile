@@ -95,7 +95,7 @@ struct SubjectCard: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 12)
                     //                        .foregroundStyle(.white)
-                    Text("\(subject.absences.count)")
+                    Text("\(subject.absences?.count ?? 0)")
                         //                        .foregroundStyle(.white)
                         .font(.caption.bold())
                 }

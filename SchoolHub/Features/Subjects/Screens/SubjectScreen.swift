@@ -52,14 +52,28 @@ struct SubjectScreen: View {
     @Environment(\.dismiss) var dismiss
     @State private var isTimeStampPickerPresented = false
 
+    var grades: [Grade] {
+        subject.grades?.sorted { $0.date > $1.date } ?? []
+    }
+
+    var absences: [Absence] {
+        subject.absences?.sorted { $0.date > $1.date } ?? []
+    }
+
+    var timeSlots: [TimeSlot] {
+        subject.timeSlots?.sorted { $0.isEarlier(than: $1) } ?? []
+    }
+
     var body: some View {
 //        ScrollView {
         ZStack(alignment: .top) {
-            Circle()
-                .blur(radius: 100)
-                .frame(maxWidth: .infinity)
-                .offset(y: -220)
-                .foregroundStyle(subject.color.color.opacity(0.9))
+            if !ProcessInfo.processInfo.isOnMac {
+                Circle()
+                    .blur(radius: 100)
+                    .frame(maxWidth: .infinity)
+                    .offset(y: -220)
+                    .foregroundStyle(subject.color.color.opacity(0.9))
+            }
             List {
                 Section {
                     VStack(alignment: .center, spacing: 16) {
@@ -80,7 +94,7 @@ struct SubjectScreen: View {
                     }
                     .frame(maxWidth: .infinity)
                     .listRowBackground(Color(.clear))
-//                        .padding(.top, 32)
+                    .padding(.top, ProcessInfo.processInfo.isOnMac ? 32 : 0)
                 }
                 Section {
                     LazyVGrid(columns: [
@@ -98,7 +112,7 @@ struct SubjectScreen: View {
                         StatCard(
                             symbolName: "number",
                             title: "Grades count",
-                            value: "\(subject.grades.count)/\(subject.timeSlots.count + 3)",
+                            value: "\(subject.grades.count)/\((subject.timeSlots.count) + 3)",
                             color: subject.color.color
                         )
                         StatCard(
@@ -118,14 +132,14 @@ struct SubjectScreen: View {
                     .listRowInsets(.init())
                 }
                 Section("Grades") {
-                    if subject.grades.isEmpty {
+                    if grades.isEmpty {
                         Text("No grades")
                             .font(.body)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     ForEach(
-                        subject.grades.sorted { $0.date > $1.date },
+                        grades,
                         id: \.id
                     ) { grade in
                         HStack {
@@ -141,14 +155,14 @@ struct SubjectScreen: View {
                 .headerProminence(.increased)
 
                 Section("Absences") {
-                    if subject.absences.isEmpty {
+                    if absences.isEmpty {
                         Text("No absences")
                             .font(.body)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     ForEach(
-                        subject.absences.sorted { $0.date > $1.date },
+                        absences,
                         id: \.id
                     ) { absence in
                         HStack {
@@ -175,9 +189,7 @@ struct SubjectScreen: View {
                 }
                 .headerProminence(.increased)
                 Section("Timetable") {
-                    ForEach(subject.timeSlots.sorted {
-                        $0.isEarlier(than: $1)
-                    }, id: \TimeSlot.id) { timeSlot in
+                    ForEach(timeSlots, id: \TimeSlot.id) { timeSlot in
                         VStack(alignment: .leading) {
                             HStack {
                                 Text(timeSlot.weekday.name)
@@ -206,7 +218,10 @@ struct SubjectScreen: View {
                     Button {
                         isTimeStampPickerPresented = true
                     } label: {
-                        Label("Add time slot", systemImage: "plus")
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("Add time slot")
+                        }
                     }
                 }
                 .headerProminence(.increased)

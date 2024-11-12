@@ -14,6 +14,11 @@ struct SchoolHubApp: App {
         WindowGroup {
             ContentView()
                 .modelContainer(for: [Subject.self])
+                .onAppear {
+                    #if targetEnvironment(macCatalyst)
+                    (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.titlebar?.titleVisibility = .hidden
+                    #endif
+                }
         }
     }
 }

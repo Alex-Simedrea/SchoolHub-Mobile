@@ -10,9 +10,9 @@ import SwiftData
 
 @Model
 class Absence {
-    @Attribute(.unique) var id = UUID()
-    var date: Date
-    var excused: Bool
+//    var id = UUID()
+    var date: Date = Date.now
+    var excused: Bool = false
     @Relationship(inverse: \Subject.absences) var subject: Subject?
     
     init(date: Date, excused: Bool) {
@@ -21,12 +21,16 @@ class Absence {
     }
 }
 
-extension [Absence] {
+extension [Absence]? {
     var excusedCount: Int {
-        return self.filter { $0.excused }.count
+        return self?.filter { $0.excused }.count ?? 0
     }
     
     var unexcusedCount: Int {
-        return self.filter { !$0.excused }.count
+        return self?.filter { !$0.excused }.count ?? 0
+    }
+    
+    var count: Int {
+        return self?.count ?? 0
     }
 }

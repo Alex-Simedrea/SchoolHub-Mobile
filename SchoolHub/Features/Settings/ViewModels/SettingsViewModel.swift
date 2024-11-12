@@ -8,9 +8,9 @@
 import Foundation
 
 class SettingsViewModel: ObservableObject {
-    @Published var username: String? = Auth.shared.getCredentials().username
-    
-    func logout() {
-        Auth.shared.logout()
-    }
+//    @Published var username: String? = Auth.shared.getCredentials().username
+//    
+//    func logout() {
+//        Auth.shared.logout()
+//    }
 }
