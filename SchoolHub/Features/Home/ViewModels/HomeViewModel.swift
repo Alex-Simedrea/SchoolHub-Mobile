@@ -178,16 +178,12 @@ class HomeViewModel: ObservableObject {
     }
     
     func getOverallAverage(forSubjects subjects: [Subject]) -> Double {
-        let subjectAverages = subjects.compactMap { subject -> Double? in
-            guard subject.unwrappedGrades.isEmpty else {
-                return nil
-            }
-            let total = subject.unwrappedGrades.reduce(0) { $0 + $1.value }
-            return Double(total) / Double(subject.unwrappedGrades.count)
-        }
+        let shownSubjects = subjects.filter { !$0.hidden }
         
-        let overallAverage = subjectAverages.reduce(0, +) / Double(subjectAverages.count)
-        return overallAverage.isNaN ? 0 : overallAverage
+        let sum = shownSubjects.reduce(0) { $0 + Int(round($1.average ?? 10)) }
+        let count = shownSubjects.count
+        
+        return count == 0 ? 0 : Double(sum) / Double(count)
     }
     
     func getAbsencesCountThisWeek(forSubjects subjects: [Subject]) -> Int {

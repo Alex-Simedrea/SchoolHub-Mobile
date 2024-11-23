@@ -8,6 +8,15 @@
 import Foundation
 
 class GradesDetailViewModel: ObservableObject {
+    func estimatedOverallAverage(for subjects: [Subject]) -> Double {
+        let shownSubjects = subjects.filter { !$0.hidden }
+        
+        let sum = shownSubjects.reduce(0) { $0 + Int(round($1.average ?? 10)) }
+        let count = shownSubjects.count
+        
+        return count == 0 ? 0 : Double(sum) / Double(count)
+    }
+    
     func overallAverage(for grades: [Grade]) -> Double {
         let gradesBySubject = Dictionary(grouping: grades, by: { $0.subject })
         let averageBySubject = gradesBySubject.mapValues { grades in

@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import WidgetKit
 
 @main
 struct SchoolHubApp: App {
@@ -18,6 +19,8 @@ struct SchoolHubApp: App {
                     #if targetEnvironment(macCatalyst)
                     (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.titlebar?.titleVisibility = .hidden
                     #endif
+                    
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
         }
     }

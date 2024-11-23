@@ -461,6 +461,7 @@ enum GradesCharts {
 
 struct GradesDetailScreen: View {
     @Query private var grades: [Grade]
+    @Query private var subjects: [Subject]
 
     @State private var chartType: GradesCharts = .average
     @ObservedObject private var viewModel: GradesDetailViewModel = .init()
@@ -493,9 +494,9 @@ struct GradesDetailScreen: View {
                                 .foregroundStyle(.secondary)
                             Text(
                                 viewModel
-                                    .overallAverage(for: grades) == 0
+                                    .estimatedOverallAverage(for: subjects) == 0
                                     ? "No grades"
-                                    : "\(String(format: "%.2f", viewModel.overallAverage(for: grades)))"
+                                    : "\(String(format: "%.2f", viewModel.estimatedOverallAverage(for: subjects)))"
                             )
                             .font(.title2.bold())
                         }
@@ -610,7 +611,7 @@ struct GradesDetailScreen: View {
 /// x per month average
 /// x number of grades per month
 /// x highlights average number of grades per month
-/// - highlights average last month vs this month
+/// x highlights average last month vs this month
 /// x highllighs number of grades last month vs this month
 /// - grades left to get this year
-/// - grades left to reach a certain average
+/// x grades left to reach a certain average

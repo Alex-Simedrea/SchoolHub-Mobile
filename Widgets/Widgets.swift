@@ -11,47 +11,76 @@ import WidgetKit
 
 struct Provider: TimelineProvider {
     var modelContext: ModelContext
-
+    
     func placeholder(in context: Context) -> TimetableEntry {
         TimetableEntry(date: Date())
     }
-
+    
     func getSnapshot(in context: Context, completion: @escaping (TimetableEntry) -> ()) {
         let entry = TimetableEntry(date: Date())
         completion(entry)
     }
-
+    
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         do {
             let timeSlots = try modelContext.fetch(FetchDescriptor<TimeSlot>())
-            let currentTimeSlot = timeSlots.currentOrNextTimeSlot
-
-            if let currentTimeSlot = currentTimeSlot {
-                let nextOccurrence = currentTimeSlot.nextOccurrence
-                var updateDate: Date
-                if nextOccurrence.start < .now {
-                    updateDate = nextOccurrence.end
-                } else {
-                    updateDate = nextOccurrence.start
-                }
-
-                let timeline = Timeline(entries: [TimetableEntry(date: .now)], policy: .after(updateDate))
+            let currentDay = Date.now.weekDay
+            
+            let todaySlots = timeSlots
+                .filter { $0.weekday == currentDay }
+                .sorted { $0.isEarlier(than: $1) }
+            
+            if todaySlots.isEmpty || (todaySlots.last?.nextOccurrence.end ?? .now) < .now {
+                let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
+                let timeline = Timeline(
+                    entries: [TimetableEntry(date: .now)],
+                    policy: .after(
+                        Calendar.current.startOfDay(for: tomorrow)
+                    )
+                )
                 completion(timeline)
                 return
             }
-
-            let timeline = Timeline(
-                entries: [TimetableEntry(date: .now)],
-                policy: .after(
-                    Calendar.current.date(byAdding: .hour, value: 24, to: .now)!
+            
+            var entries: [TimetableEntry] = []
+            for slot in todaySlots {
+                let nextOccurrence = slot.nextOccurrence
+                
+                if nextOccurrence.end >= .now {
+                    entries.append(TimetableEntry(date: nextOccurrence.start))
+                    entries.append(TimetableEntry(date: nextOccurrence.end))
+                }
+            }
+            
+            if entries.isEmpty {
+                entries.append(TimetableEntry(date: .now))
+            }
+            
+            entries.sort { $0.date < $1.date }
+            
+            if let lastSlot = todaySlots.last {
+                let timeline = Timeline(
+                    entries: entries,
+                    policy: .after(lastSlot.nextOccurrence.end)
                 )
-            )
-            completion(timeline)
+                completion(timeline)
+            } else {
+                let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
+                let timeline = Timeline(
+                    entries: entries,
+                    policy: .after(
+                        Calendar.current.startOfDay(for: tomorrow)
+                    )
+                )
+                completion(timeline)
+            }
+            
         } catch {
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
             let timeline = Timeline(
                 entries: [TimetableEntry(date: .now)],
                 policy: .after(
-                    Calendar.current.date(byAdding: .hour, value: 24, to: .now)!
+                    Calendar.current.startOfDay(for: tomorrow)
                 )
             )
             completion(timeline)
@@ -69,40 +98,51 @@ struct WidgetsEntryView: View {
     @Query private var timeSlots: [TimeSlot]
     @Environment(\.widgetFamily) private var family
     @Environment(\.widgetRenderingMode) private var renderingMode
-
+    
     var currentTimeSlot: TimeSlot? {
         timeSlots.currentOrNextTimeSlot
     }
-
+    
     var currentDay: Int {
         if let currentTimeSlot = currentTimeSlot {
             return currentTimeSlot.weekday.rawValue
         }
-
+        
         let day = Date.now.weekDay.rawValue
         if day > 5 {
             return 1
         }
         return day
     }
-
-    var maxSlots: Int {
-        switch family {
-        case .systemLarge: return 6
-        default: return 8
+    
+    var visibleTimeSlots: [TimeSlot] {
+        let todaySlots = timeSlots
+            .filter { $0.weekday.rawValue == currentDay }
+            .sorted { $0.isEarlier(than: $1) }
+        
+        // If we have 6 or fewer slots, show them all
+        if todaySlots.count <= 6 {
+            return todaySlots
         }
+        
+        // Find the index of the first non-ended slot
+        let currentIndex = todaySlots.firstIndex(where: { slot in
+            return !slot.endTime.isTimeEarlier(than: .now)
+        }) ?? 0
+        
+        // Calculate the range of slots to show
+        let startIndex = min(currentIndex, todaySlots.count - 6)
+        let endIndex = min(startIndex + 6, todaySlots.count)
+        
+        return Array(todaySlots[startIndex ..< endIndex])
     }
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("\(Weekday(rawValue: currentDay)?.name ?? "")")
                 .font(.headline.bold())
-//            Text(entry.date, format: .dateTime)
-            ForEach(timeSlots
-                .filter { $0.weekday.rawValue == currentDay }
-                .sorted { $0.isEarlier(than: $1) },
-                id: \.id)
-            { timeSlot in
+            
+            ForEach(visibleTimeSlots, id: \.id) { timeSlot in
                 HStack {
                     VStack(alignment: .leading) {
                         if let subject = timeSlot.subject {
@@ -110,11 +150,11 @@ struct WidgetsEntryView: View {
                                 .font(.callout.bold())
                                 .foregroundStyle(.white)
                         }
-                        if let location = timeSlot.location, !location.isEmpty {
-                            Text(location)
-                                .font(.subheadline)
-                                .foregroundStyle(.white.opacity(0.8))
-                        }
+//                        if let location = timeSlot.location, !location.isEmpty {
+//                            Text(location)
+//                                .font(.subheadline)
+//                                .foregroundStyle(.white.opacity(0.8))
+//                        }
                     }
                     if timeSlot == currentTimeSlot {
                         if let nextOccurrence = currentTimeSlot?.nextOccurrence {
@@ -159,9 +199,16 @@ struct WidgetsEntryView: View {
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             }
+            
+            if timeSlots.filter({ $0.weekday.rawValue == currentDay }).count > 6 {
+                Text("+ more classes today")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(0)
+        .animation(.default, value: visibleTimeSlots)
     }
 }
 

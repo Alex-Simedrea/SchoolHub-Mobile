@@ -10,6 +10,8 @@ import SwiftUI
 
 struct HomeScreen: View {
     @Query var subjects: [Subject]
+    @Query var grades: [Grade]
+    @Query var absences: [Absence]
     @Environment(\.modelContext) private var context
     @ObservedObject var viewModel: HomeViewModel = .init()
     @Namespace var namespace
@@ -28,7 +30,7 @@ struct HomeScreen: View {
                             String(
                                 format: "%.2f",
                                 viewModel
-                                    .overallAverage(for: viewModel.getGradesFromSubjects(subjects))
+                                    .getOverallAverage(forSubjects: subjects)
                             ),
                             String(viewModel.getGradesCountThisWeek(forSubjects: subjects)),
                             String(viewModel.getGradesCountThisMonth(forSubjects: subjects)),
@@ -128,6 +130,14 @@ struct HomeScreen: View {
         }
 
         let fetchedSubjects = try await viewModel.getData()
+        
+        for grade in grades {
+            context.delete(grade)
+        }
+        
+        for absence in absences {
+            context.delete(absence)
+        }
 
         for fetchedSubject in fetchedSubjects {
             let fetchedSubjectName: String = fetchedSubject.name

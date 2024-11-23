@@ -70,6 +70,11 @@ class Subject {
     var unwrappedTimeSlots: [TimeSlot] {
         timeSlots ?? []
     }
+    
+    var average: Double? {
+        guard !unwrappedGrades.isEmpty else { return nil }
+        return unwrappedGrades.map { Double($0.value) }.reduce(0, +) / Double(unwrappedGrades.count)
+    }
 
     init(
         name: String,

@@ -31,33 +31,40 @@ struct LoopingScrollView<Content: View, Item: RandomAccessCollection>: View wher
 //            let size = $0.size
 //            let repeatingCount = width > 0 ? (Int((size.width / width).rounded()) + 1) : 1
                 
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: spacing) {
-                    ForEach(items) { item in
-                        content(item)
-                            .frame(width: width)
-                    }
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: spacing) {
+                ForEach(items) { item in
+                    content(item)
+                        .frame(width: width)
+                }
                         
-                    ForEach(0 ..< 1, id: \.self) { index in
-                        let item = Array(items)[index % items.count]
-                        content(item)
-                            .frame(width: width)
-                    }
+                ForEach(0 ..< 1, id: \.self) { index in
+                    let item = Array(items)[index % items.count]
+                    content(item)
+                        .frame(width: width)
                 }
-                .background {
-                    let _ = print("width before \(width)")
-                    if width > 0 {
-                        ScrollViewHelper(
-                            width: width,
-                            spacing: spacing,
-                            itemsCount: items.count,
-                            repeatingCount: 1,
-                            internalIndex: $internalIndex,
-                            scrollView: $scrollView
-                        )
-                    }
+            }
+            .background {
+                let _ = print("width before \(width)")
+                if width > 0 {
+                    ScrollViewHelper(
+                        width: width,
+                        spacing: spacing,
+                        itemsCount: items.count,
+                        repeatingCount: 1,
+                        internalIndex: $internalIndex,
+                        scrollView: $scrollView
+                    )
                 }
+            }
 //            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                scrollToIndex(currentIndex, animated: true)
+//                internalIndex = 4
+//                print("❌❌❌❌❌❌❌ scrolling to \(currentIndex)")
+            }
         }
         .onChange(of: currentIndex) {
             if internalIndex != currentIndex {

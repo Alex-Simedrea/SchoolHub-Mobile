@@ -10,7 +10,7 @@
 		FA107CBE2CC3C0C60097138E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA107CBD2CC3C0C60097138E /* Alamofire */; };
 		FA2AE18B2CD42C7E00E09E41 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA2AE18A2CD42C7E00E09E41 /* SFSymbolsPicker */; };
 		FA2AE18E2CD43A4400E09E41 /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA2AE18D2CD43A4400E09E41 /* SymbolPicker */; };
-		FA49E22A2CE0EEF200ADE397 /* SchoolHubWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA49E22A2CE0EEF200ADE397 /* SchoolHubWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA71410E2CD76FA300CA5F8A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410D2CD76FA200CA5F8A /* WidgetKit.framework */; };
 		FA7141102CD76FA300CA5F8A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410F2CD76FA300CA5F8A /* SwiftUI.framework */; };
 		FA71411D2CD76FA400CA5F8A /* WidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -386,6 +386,7 @@
 /* Begin PBXTargetDependency section */
 		FA49E2292CE0EEF200ADE397 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */;
 			targetProxy = FA49E2282CE0EEF200ADE397 /* PBXContainerItemProxy */;
 		};

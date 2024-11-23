@@ -12,6 +12,8 @@ import UniformTypeIdentifiers
 struct SettingsScreen: View {
     @ObservedObject var viewModel: SettingsViewModel = .init()
     @Query private var subjects: [Subject]
+    @Query private var grades: [Grade]
+    @Query private var absences: [Absence]
     @State private var json: String = ""
     @Environment(\.modelContext) private var context
     @State private var isLoginPresented: Bool = false
@@ -179,6 +181,14 @@ struct SettingsScreen: View {
                     isPresented: $isConfirmingDeleteGradesAndAbsences)
                 {
                     Button("Delete", role: .destructive) {
+                        for grade in grades {
+                            context.delete(grade)
+                        }
+                        
+                        for absence in absences {
+                            context.delete(absence)
+                        }
+                        
                         for subject in subjects {
                             for grade in subject.unwrappedGrades {
                                 context.delete(grade)

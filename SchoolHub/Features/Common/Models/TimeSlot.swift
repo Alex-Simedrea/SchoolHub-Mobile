@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class TimeSlot {
+class TimeSlot: Codable {
 //    var id = UUID()
     var weekday: Weekday = Weekday.monday
     var startTime: Date = Date.now
@@ -29,6 +29,29 @@ class TimeSlot {
         self.startTime = startTime
         self.endTime = endTime
         self.location = location
+    }
+    
+    enum CodingKeys: CodingKey {
+        case weekday
+        case startTime
+        case endTime
+        case location
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        weekday = try container.decode(Weekday.self, forKey: .weekday)
+        startTime = try container.decode(Date.self, forKey: .startTime)
+        endTime = try container.decode(Date.self, forKey: .endTime)
+        location = try container.decodeIfPresent(String.self, forKey: .location)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(weekday, forKey: .weekday)
+        try container.encode(startTime, forKey: .startTime)
+        try container.encode(endTime, forKey: .endTime)
+        try container.encodeIfPresent(location, forKey: .location)
     }
 }
 
