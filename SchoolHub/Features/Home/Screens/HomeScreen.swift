@@ -118,7 +118,7 @@ struct HomeScreen: View {
         }
         .onAppear {
             if firstAppear {
-//                Task { try await fetchAndSaveData() }
+                Task { try await fetchAndSaveData() }
                 firstAppear = false
             }
         }
