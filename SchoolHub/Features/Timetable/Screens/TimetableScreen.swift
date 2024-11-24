@@ -13,18 +13,12 @@ struct TimetableScreen: View {
     @Query private var timeSlots: [TimeSlot]
     @Environment(\.modelContext) private var context
     @State private var index = 0
-    @Namespace private var namespace
+    @State private var scrollPosition: ScrollPosition = .init(idType: Weekday.ID.self)
     @State private var viewWidth: CGFloat = 0
-    @State private var viewHeight: CGFloat = 0
-    @State private var isViewReady = false
 
-//    init() {
-//        index = Date.now.weekDay.id < 6 ? Date.now.weekDay.id : 1
-//    }
+    @Namespace private var namespace
 
-//    private var currentWeekday: Weekday {
-//        Weekday.weekdays[index]
-//    }
+    @State private var currentPage = 0
 
     func maxTimeSlotsInADay() -> Int {
         let timeSlotsByWeekday = Dictionary(grouping: timeSlots, by: \.weekday)
@@ -38,34 +32,22 @@ struct TimetableScreen: View {
     var body: some View {
         NavigationStack {
             if !ProcessInfo.processInfo.isOnMac {
-                GeometryReader { geo in
-                    Color.clear
-                        .onAppear {
-                            viewWidth = geo.size.width
-                            DispatchQueue.main.async {
-                                isViewReady = true
-                            }
-                        }
-                        .onChange(of: geo.size.width) {
-                            viewWidth = geo.size.width
-                        }
-                        .frame(height: 0)
-                }
-                .frame(height: 0)
                 ScrollView {
                     HStack {
                         ForEach(Weekday.weekdays, id: \.id) { weekday in
                             Button {
-                                index = weekday.id - 1
+                                withAnimation {
+                                    scrollPosition.scrollTo(id: weekday.id, anchor: .center)
+                                }
                             } label: {
-                                if index == weekday.id - 1 {
+                                if (scrollPosition.viewID(type: Weekday.ID.self) ?? 0) == (weekday.id) {
                                     Text(weekday.name)
                                         .padding()
                                         .cornerRadius(8)
                                         .foregroundStyle(.white)
                                         .font(.headline)
                                 } else {
-                                    Text(weekday.shortName.prefix(1))
+                                    Text(weekday.name.prefix(1))
                                         .padding()
                                         .cornerRadius(8)
                                         .foregroundStyle(
@@ -77,7 +59,7 @@ struct TimetableScreen: View {
                                 }
                             }
                             .background {
-                                if index == weekday.id - 1 {
+                                if (scrollPosition.viewID(type: Weekday.ID.self) ?? 0) == (weekday.id) {
                                     Capsule()
                                         .foregroundColor(.blue)
                                         .matchedGeometryEffect(id: "selected", in: namespace)
@@ -88,102 +70,82 @@ struct TimetableScreen: View {
                             }
                         }
                     }
-                    .padding(.horizontal)
-                    .animation(.smooth(duration: 0.3), value: index)
+                    .padding()
+                    .animation(.smooth(duration: 0.3), value: scrollPosition.viewID(type: Weekday.ID.self))
                     .frame(maxWidth: .infinity)
 
-                    if isViewReady && viewWidth > 0 {
-                        LoopingScrollView(
-                            width: viewWidth,
-                            spacing: 0,
-                            items: Weekday.weekdays,
-                            currentIndex: $index
-                        ) { weekday in
-                            VStack {
-                                ForEach(timeSlots
-                                    .filter { $0.weekday == weekday }
-                                    .sorted { $0.isEarlier(than: $1) },
-                                    id: \.id)
-                                { timeSlot in
-                                    HStack {
-                                        VStack(alignment: .leading) {
-                                            if let subject = timeSlot.subject {
-                                                Text(subject.displayName)
-                                                    .font(.headline)
-                                                    .foregroundStyle(.white)
-                                            }
-                                            if let location = timeSlot.location, !location.isEmpty {
-                                                Text(location)
-                                                    .font(.subheadline)
-                                                    .foregroundStyle(.white.opacity(0.8))
-                                            }
-                                        }
-                                        Spacer()
-                                        VStack(alignment: .trailing) {
-                                            Text(timeSlot.startTime.formatted(.dateTime.hour().minute()))
-                                                .font(.headline)
-                                                .foregroundStyle(.white)
-                                            Text(timeSlot.endTime.formatted(.dateTime.hour().minute()))
-                                                .font(.headline)
-                                                .foregroundStyle(.white)
-                                        }
-                                    }
-                                    .padding(.vertical, 10)
-                                    .padding(.horizontal)
-                                    .background(
-                                        (timeSlot.subject?.color.color ?? Color.blue).gradient
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            context.delete(timeSlot)
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                WidgetCenter.shared.reloadAllTimelines()
-                                            }
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
-                                        }
-                                    }
-                                }
-
-                                if weekday == .monday {
-                                    ForEach(0 ..< maxTimeSlotsInADay() - timeSlots.filter { $0.weekday == .monday }.count, id: \.self) { _ in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .top, spacing: 0) {
+                            ForEach(Weekday.weekdays) { weekday in
+                                VStack {
+                                    ForEach(timeSlots
+                                        .filter { $0.weekday == weekday }
+                                        .sorted { $0.isEarlier(than: $1) },
+                                        id: \.id)
+                                    { timeSlot in
                                         HStack {
                                             VStack(alignment: .leading) {
-                                                Text("Free")
-                                                    .font(.headline)
-                                                    .foregroundStyle(.white)
+                                                if let subject = timeSlot.subject {
+                                                    Text(subject.displayName)
+                                                        .font(.headline)
+                                                        .foregroundStyle(.white)
+                                                }
+                                                if let location = timeSlot.location, !location.isEmpty {
+                                                    Text(location)
+                                                        .font(.subheadline)
+                                                        .foregroundStyle(.white.opacity(0.8))
+                                                }
                                             }
                                             Spacer()
                                             VStack(alignment: .trailing) {
-                                                Text("00:00")
+                                                Text(timeSlot.startTime.formatted(.dateTime.hour().minute()))
                                                     .font(.headline)
                                                     .foregroundStyle(.white)
-                                                Text("00:00")
+                                                Text(timeSlot.endTime.formatted(.dateTime.hour().minute()))
                                                     .font(.headline)
                                                     .foregroundStyle(.white)
                                             }
                                         }
                                         .padding(.vertical, 10)
                                         .padding(.horizontal)
-                                        .background(Color.blue.gradient)
+                                        .background(
+                                            (timeSlot.subject?.color.color ?? Color.blue).gradient
+                                        )
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                                        .opacity(0)
+                                        .contextMenu {
+                                            Button(role: .destructive) {
+                                                context.delete(timeSlot)
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    WidgetCenter.shared.reloadAllTimelines()
+                                                }
+                                            } label: {
+                                                Label("Delete", systemImage: "trash")
+                                            }
+                                        }
                                     }
                                 }
+                                .padding(.horizontal)
+                                .frame(width: viewWidth, alignment: .top)
                             }
-                            .padding()
-                            .frame(maxHeight: .infinity, alignment: .top)
                         }
-                        .scrollTargetBehavior(.paging)
+                        .scrollTargetLayout()
                     }
-//                    .onAppear {
-//                        index = Date.now.weekDay.id < 6 ? Date.now.weekDay.id - 1 : 3
-//                        index = 3
-//                    }
+                    .scrollPosition($scrollPosition)
+                    .scrollTargetBehavior(.paging)
+                    GeometryReader { geo in
+                        Color.clear
+                            .onAppear {
+                                viewWidth = geo.size.width
+                            }
+                            .onChange(of: geo.size.width) {
+                                viewWidth = geo.size.width
+                            }
+                            .frame(height: 0)
+                    }
                 }
                 .onAppear {
-                    index = Date.now.weekDay.id < 6 ? Date.now.weekDay.id - 1 : 0
+                    index = Date.now.weekDay.id < 6 ? Date.now.weekDay.id : 1
+                    scrollPosition.scrollTo(id: index, anchor: .center)
                 }
                 .navigationTitle("Timetable")
             } else {
@@ -248,7 +210,6 @@ struct TimetableScreen: View {
                     index = Date.now.weekDay.id < 6 ? Date.now.weekDay.id : 0
                 }
                 .navigationTitle("Timetable")
-//                .navigationBarTitleDisplayMode(.inline)
             }
         }
         .onAppear {

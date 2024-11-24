@@ -53,6 +53,7 @@ struct SubjectAverageView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(.blue.gradient)
                         }
+                        .foregroundStyle(.white)
                     VStack(alignment: .leading) {
                         Text("Suggestions to Reach Target")
                             .font(.headline.bold())
@@ -104,7 +105,7 @@ struct SubjectAverageView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
-        .navigationTitle(subject.name)
+        .navigationTitle(subject.displayName)
         .sheet(isPresented: $showingSimulation) {
             NavigationView {
                 Form {

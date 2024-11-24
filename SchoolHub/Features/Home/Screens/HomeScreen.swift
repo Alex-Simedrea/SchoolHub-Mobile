@@ -35,7 +35,7 @@ struct HomeScreen: View {
                             String(viewModel.getGradesCountThisWeek(forSubjects: subjects)),
                             String(viewModel.getGradesCountThisMonth(forSubjects: subjects)),
                         ],
-                        labels: ["overall average", "this week", "this month"]
+                        labels: ["average", "this week", "this month"]
                     )
                     .padding(.vertical, 8)
                 }
@@ -72,7 +72,7 @@ struct HomeScreen: View {
                 }
                 Section(header: Text("Recents")) {
                     ForEach(
-                        viewModel.getRecentItems(fromSubjects: subjects),
+                        viewModel.getRecentItems(fromSubjects: subjects, limit: 7),
                         id: \.id
                     ) { item in
                         switch item {
@@ -118,7 +118,7 @@ struct HomeScreen: View {
         }
         .onAppear {
             if firstAppear {
-                Task { try await fetchAndSaveData() }
+//                Task { try await fetchAndSaveData() }
                 firstAppear = false
             }
         }
@@ -130,11 +130,11 @@ struct HomeScreen: View {
         }
 
         let fetchedSubjects = try await viewModel.getData()
-        
+
         for grade in grades {
             context.delete(grade)
         }
-        
+
         for absence in absences {
             context.delete(absence)
         }

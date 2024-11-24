@@ -59,7 +59,12 @@ struct AbsencesDetailScreen: View {
                                 "\(viewModel.getAbsencesCount(in: scrollPositionStart ... scrollPositionEnd, for: absences), format: .number) Absences"
                             )
                             .font(.title2.bold())
-                                
+                            Text(
+                                "\(viewModel.getUnexcusedAbsencesCount(in: scrollPositionStart ... scrollPositionEnd, for: absences), format: .number) unexcused"
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+
                             Text("\(scrollPositionString) – \(scrollPositionEndString)")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
@@ -76,7 +81,12 @@ struct AbsencesDetailScreen: View {
                             Text("\(absences.count, format: .number) Absences")
                                 .font(.title2.bold())
                                 .foregroundColor(.primary)
-                                
+                            Text(
+                                "\(absences.filter { !$0.excused }.count, format: .number) unexcused"
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+
                             MonthlyAbsencesChart(absences: viewModel.getAbsencesCountByMonth(for: absences))
                                 .frame(height: 240)
                         }

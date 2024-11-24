@@ -19,7 +19,7 @@ struct AbsenceGeneralListItem: View {
             HStack {
                 RoundedRectangle(cornerRadius: 8)
                     .frame(width: 32, height: 32)
-                    .foregroundStyle(color)
+                    .foregroundStyle(color.gradient)
                     .overlay {
                         Image(systemName: symbolName)
                             .foregroundStyle(.white)

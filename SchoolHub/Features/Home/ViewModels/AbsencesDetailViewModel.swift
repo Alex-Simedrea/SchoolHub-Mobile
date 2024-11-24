@@ -12,6 +12,10 @@ class AbsencesDetailViewModel: ObservableObject {
     func getAbsencesCount(in dateRange: ClosedRange<Date>, for absences: [Absence]) -> Int {
         return absences.filter { dateRange.contains($0.date) }.count
     }
+    
+    func getUnexcusedAbsencesCount(in dateRange: ClosedRange<Date>, for absences: [Absence]) -> Int {
+        return absences.filter { dateRange.contains($0.date) && !$0.excused }.count
+    }
 
     func getAbsences(in dateRange: ClosedRange<Date>, for absences: [Absence]) -> [Absence] {
         return absences.filter { dateRange.contains($0.date) }

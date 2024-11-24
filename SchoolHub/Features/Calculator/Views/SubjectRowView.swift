@@ -29,6 +29,16 @@ struct SubjectRowView: View {
             )
         ) {
             HStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 28, height: 28)
+                    .foregroundStyle(simulatedSubject.subject.color.color.gradient)
+                    .overlay {
+                        Image(systemName: simulatedSubject.subject.symbolName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(4)
+                            .foregroundStyle(.white)
+                    }
                 Text(simulatedSubject.subject.displayName)
                 Spacer()
                 if simulatedSubject.isSimulated && simulatedSubject.originalAverage != nil {
@@ -65,12 +75,14 @@ struct SubjectRowView: View {
                 } label: {
                     HStack {
                         Text("\(simulatedSubject.simulatedAverage)")
+                            .font(simulatedSubject.isSimulated ? .body : .body.bold())
+                            .foregroundStyle(
+                                simulatedSubject.isSimulated
+                                ? .secondary
+                                : .primary)
                         Image(systemName: "chevron.up.chevron.down")
+                            .foregroundStyle(.secondary)
                     }
-                    .foregroundStyle(
-                        simulatedSubject.isSimulated
-                            ? .secondary
-                            : .primary)
                     .foregroundStyle(.foreground)
                 }
             }

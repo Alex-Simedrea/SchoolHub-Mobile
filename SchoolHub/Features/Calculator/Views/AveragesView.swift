@@ -47,6 +47,7 @@ struct AveragesView: View {
                                 RoundedRectangle(cornerRadius: 12)
                                     .fill(.blue.gradient)
                             }
+                            .foregroundStyle(.white)
                         VStack(alignment: .leading) {
                             Text("Suggestions for improvement")
                                 .font(.headline.bold())
@@ -61,11 +62,22 @@ struct AveragesView: View {
                                 SubjectAverageView(subject: simulatedSubject.subject, targetAverage: simulatedSubject.simulatedAverage + increase)
                             }) {
                                 HStack {
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .frame(width: 28, height: 28)
+                                        .foregroundStyle(simulatedSubject.subject.color.color.gradient)
+                                        .overlay {
+                                            Image(systemName: simulatedSubject.subject.symbolName)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .padding(4)
+                                                .foregroundStyle(.white)
+                                        }
                                     Text(simulatedSubject.subject.displayName)
                                     Spacer()
                                     Text("Current: \(simulatedSubject.simulatedAverage)")
                                     Text("Target: \(simulatedSubject.simulatedAverage + increase)")
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.blue)
+                                        .font(.body.bold())
                                 }
                             }
                     }

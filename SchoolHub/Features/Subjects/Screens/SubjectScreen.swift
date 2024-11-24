@@ -153,6 +153,16 @@ struct SubjectScreen: View {
                     }
                 }
                 .headerProminence(.increased)
+                
+                Section {
+                    NavigationLink(
+                        "Average calculator",
+                        destination: SubjectAverageView(
+                            subject: subject,
+                            targetAverage: 10
+                        )
+                    )
+                }
 
                 Section("Absences") {
                     if absences.isEmpty {
