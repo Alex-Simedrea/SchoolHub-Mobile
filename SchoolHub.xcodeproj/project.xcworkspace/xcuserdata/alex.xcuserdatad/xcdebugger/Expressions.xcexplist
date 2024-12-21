@@ -3,10 +3,32 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "GradesSubjectSimulation.average.getter:GradesSubjectSimulation.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.allGrades">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "AveragesViewModel.improvementSuggestions(for:):GradeSimulation.swift">
          <PersistentStrings>
             <PersistentString
                value = "subject.average">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SubjectAverageViewModel.improvementSuggestions.getter:SubjectAverageViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempSubject.average">
+            </PersistentString>
+            <PersistentString
+               value = "self.targetAverage">
+            </PersistentString>
+            <PersistentString
+               value = "self.simulation">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

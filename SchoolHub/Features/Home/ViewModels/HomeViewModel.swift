@@ -38,7 +38,6 @@ class HomeViewModel: ObservableObject {
                     encoder: URLEncodedFormParameterEncoder.default,
                     headers: [
                         "Content-Type": "application/x-www-form-urlencoded"
-//                        "Cookie": (HTTPCookieStorage.shared.cookies(for: URL(string: "https://noteincatalog.ro")!)?.first?.name ?? "") + "=" + (HTTPCookieStorage.shared.cookies(for: URL(string: "https://noteincatalog.ro")!)?.first?.value ?? "")
                     ]
                 ).serializingData().value
                 
@@ -229,6 +228,7 @@ class HomeViewModel: ObservableObject {
     
     func overallAverage(for grades: [Grade]) -> Double {
         let gradesBySubject = Dictionary(grouping: grades, by: { $0.subject })
+//        print(gradesBySubject.mapValues { $0.map { $0.value } })
         let averageBySubject = gradesBySubject.mapValues { grades in
             Double(grades.reduce(0) { $0 + $1.value }) / Double(grades.count)
         }
@@ -244,13 +244,18 @@ class HomeViewModel: ObservableObject {
             }
         
         var previousAverage: Double?
-        var gradesUpToDate: [Grade] = []
+        var gradesUpToDate: [Grade] = grades
+            .sorted { $0.date < $1.date }
+            .filter {
+                $0.date < Calendar.current.date(byAdding: .day, value: -30, to: .now)!
+            }
         
         var result: [(date: Date, value: Double)] = []
         
         for grade in sortedGrades {
             gradesUpToDate.append(grade)
             let currentAverage = overallAverage(for: gradesUpToDate)
+//            print(grade)
             
             if previousAverage == nil || previousAverage != currentAverage {
                 result.append((date: grade.date, value: currentAverage))

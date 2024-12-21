@@ -22,6 +22,7 @@ struct RootScreen: View {
     @EnvironmentObject var auth: Auth
     @Query private var subjects: [Subject]
     @State private var isShowingSheet = false
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -85,6 +86,14 @@ struct RootScreen: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
+        .onChange(of: subjects) {
+            let groupedSubjects = Dictionary(grouping: subjects, by: \.name)
+            let deduplicatedSubjects = groupedSubjects.map { $0.value.first! }
+            let subjectsToDelete = subjects.filter { !deduplicatedSubjects.contains($0) }
+            for subject in subjectsToDelete {
+                context.delete(subject)
+            }
+        }
     }
 }
 

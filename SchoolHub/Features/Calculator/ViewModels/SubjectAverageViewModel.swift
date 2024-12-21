@@ -47,6 +47,7 @@ class SubjectAverageViewModel: ObservableObject {
                 
                 tempSubject = simulation
             }
+            tempSubject = simulation
         }
         
         return suggestions.sorted { s1, s2 in

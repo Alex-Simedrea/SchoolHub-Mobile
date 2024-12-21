@@ -98,6 +98,15 @@ extension Calendar {
         return (components.hour ?? 0) * 60 + (components.minute ?? 0)
     }
     
+    func date(bySettingMinutesSinceMidnight minutes: Int, for date: Date) -> Date? {
+        let hours = minutes / 60
+        let mins = minutes % 60
+        var components = dateComponents([.year, .month, .day], from: date)
+        components.hour = hours
+        components.minute = mins
+        return self.date(from: components)
+    }
+    
     var midnight: Date {
         return self.date(
             from: self.dateComponents([.year, .month, .day], from: .now)

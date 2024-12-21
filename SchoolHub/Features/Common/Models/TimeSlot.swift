@@ -63,6 +63,13 @@ extension TimeSlot {
         return weekday.id < other.weekday.id
     }
     
+    func isLater(than other: TimeSlot) -> Bool {
+        if weekday == other.weekday {
+            return other.startTime.isTimeEarlier(than: startTime)
+        }
+        return weekday.id > other.weekday.id
+    }
+    
     var nextOccurrence: (start: Date, end: Date) {
         let calendar = Calendar.current
         let now = Date.now

@@ -29,6 +29,90 @@ struct TimetableScreen: View {
         maxTimeSlotsInADay() - timeSlots.filter { $0.weekday == .monday }.count
     }
 
+    @State private var currentTimeSlot: TimeSlot?
+
+    var currentDay: Int {
+        if let currentTimeSlot = currentTimeSlot {
+            return currentTimeSlot.weekday.rawValue
+        }
+
+        let day = Date.now.weekDay.rawValue
+        if day > 5 {
+            return 1
+        }
+        return day
+    }
+
+    @State private var timer: Timer?
+    
+    @State private var currentTime = Date.now
+    private let timeUpdateTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
+    private func scheduleNextUpdate() {
+        timer?.invalidate()
+        
+        guard let nextTimeSlot = timeSlots.currentOrNextTimeSlot else {
+            return
+        }
+        
+        let now = Date.now
+        let calendar = Calendar.current
+        let currentWeekDay = now.weekDay
+        let currentMinutes = calendar.minutesSinceMidnight(for: now)
+        
+        if nextTimeSlot.weekday == currentWeekDay {
+            let slotStartMinutes = calendar.minutesSinceMidnight(for: nextTimeSlot.startTime)
+            let slotEndMinutes = calendar.minutesSinceMidnight(for: nextTimeSlot.endTime)
+            
+            if currentMinutes <= slotStartMinutes {
+                let startTime = calendar.date(bySettingMinutesSinceMidnight: slotStartMinutes, for: now) ?? now
+                let startInterval = startTime.timeIntervalSince(now)
+                
+                if startInterval > 0 {
+                    Timer.scheduledTimer(withTimeInterval: startInterval, repeats: false) { _ in
+                        DispatchQueue.main.async {
+                            withAnimation {
+                                self.currentTimeSlot = self.timeSlots.currentOrNextTimeSlot
+                            }
+                            self.scheduleNextUpdate()
+                        }
+                    }
+                }
+            }
+            
+            // Schedule timer for slot end
+            if currentMinutes < slotEndMinutes {
+                let endTime = calendar.date(bySettingMinutesSinceMidnight: slotEndMinutes, for: now) ?? now
+                let endInterval = endTime.timeIntervalSince(now)
+                
+                if endInterval > 0 {
+                    Timer.scheduledTimer(withTimeInterval: endInterval, repeats: false) { _ in
+                        DispatchQueue.main.async {
+                            withAnimation {
+                                self.currentTimeSlot = self.timeSlots.currentOrNextTimeSlot
+                            }
+                            self.scheduleNextUpdate()
+                        }
+                    }
+                }
+            }
+        } else {
+            let nextDay = calendar.startOfDay(for: now.addingTimeInterval(24*60*60))
+            let interval = nextDay.timeIntervalSince(now)
+            
+            if interval > 0 {
+                Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { _ in
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            self.currentTimeSlot = self.timeSlots.currentOrNextTimeSlot
+                        }
+                        self.scheduleNextUpdate()
+                    }
+                }
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             if !ProcessInfo.processInfo.isOnMac {
@@ -96,6 +180,47 @@ struct TimetableScreen: View {
                                                         .foregroundStyle(.white.opacity(0.8))
                                                 }
                                             }
+                                            if timeSlot == currentTimeSlot {
+                                                if let nextOccurrence = currentTimeSlot?.nextOccurrence {
+                                                    if !(nextOccurrence.start < currentTime) {
+                                                        Text("Next Up")
+                                                            .font(.callout.bold())
+                                                            .padding(.horizontal, 12)
+                                                            .padding(.vertical, 2)
+                                                            .foregroundStyle(.clear)
+                                                            .background {
+                                                                Capsule()
+                                                                    .foregroundColor(.white)
+                                                            }
+                                                            .overlay {
+                                                                Text("Next Up")
+                                                                    .font(.callout.bold())
+                                                                    .padding(.horizontal, 12)
+                                                                    .padding(.vertical, 2)
+                                                                    .blendMode(.destinationOut)
+                                                            }
+                                                            .compositingGroup()
+                                                    } else {
+                                                        Text(nextOccurrence.end, style: .relative)
+                                                            .font(.callout.bold())
+                                                            .padding(.horizontal, 12)
+                                                            .padding(.vertical, 2)
+                                                            .foregroundStyle(.clear)
+                                                            .background {
+                                                                Capsule()
+                                                                    .foregroundColor(.white)
+                                                            }
+                                                            .overlay {
+                                                                Text(nextOccurrence.end, style: .relative)
+                                                                    .font(.callout.bold())
+                                                                    .padding(.horizontal, 12)
+                                                                    .padding(.vertical, 2)
+                                                                    .blendMode(.destinationOut)
+                                                            }
+                                                            .compositingGroup()
+                                                    }
+                                                }
+                                            }
                                             Spacer()
                                             VStack(alignment: .trailing) {
                                                 Text(timeSlot.startTime.formatted(.dateTime.hour().minute()))
@@ -143,9 +268,24 @@ struct TimetableScreen: View {
                             .frame(height: 0)
                     }
                 }
+                .task {
+                    scrollPosition.scrollTo(id: currentDay, anchor: .center)
+                }
                 .onAppear {
                     index = Date.now.weekDay.id < 6 ? Date.now.weekDay.id : 1
-                    scrollPosition.scrollTo(id: index, anchor: .center)
+                    currentTimeSlot = timeSlots.currentOrNextTimeSlot
+                    scheduleNextUpdate()
+                }
+                .onDisappear {
+                    timer?.invalidate()
+                    timeUpdateTimer.upstream.connect().cancel()
+                }
+                .onReceive(timeUpdateTimer) { time in
+                    currentTime = time
+                    if let current = currentTimeSlot,
+                       current.nextOccurrence.start <= time {
+                        currentTimeSlot = timeSlots.currentOrNextTimeSlot
+                    }
                 }
                 .navigationTitle("Timetable")
             } else {
@@ -168,20 +308,23 @@ struct TimetableScreen: View {
                                     if let subject = timeSlot.subject {
                                         Text(subject.displayName)
                                             .font(.headline)
+                                            .foregroundStyle(.white)
                                     }
                                     if let location = timeSlot.location, !location.isEmpty {
                                         Text(location)
                                             .font(.subheadline)
-                                            .foregroundStyle(.secondary)
+                                            .foregroundStyle(.white.secondary)
                                     }
                                 }
                                 Spacer()
                                 VStack(alignment: .trailing) {
                                     Text(timeSlot.startTime.formatted(.dateTime.hour().minute()))
+                                        .foregroundStyle(.white)
                                         .font(.headline)
                                         .fontWeight(.semibold)
                                         .multilineTextAlignment(.trailing)
                                     Text(timeSlot.endTime.formatted(.dateTime.hour().minute()))
+                                        .foregroundStyle(.white)
                                         .font(.headline)
                                         .fontWeight(.semibold)
                                         .multilineTextAlignment(.trailing)

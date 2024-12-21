@@ -100,6 +100,13 @@
 			);
 			target = FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */;
 		};
+		FA6AFABD2D14BC000045F4FE /* Exceptions for "Widgets" folder in "SchoolHub" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TimetableLiveActivity.swift,
+			);
+			target = FA6C53DD2CBB038900A63670 /* SchoolHub */;
+		};
 		FA7141212CD76FA400CA5F8A /* Exceptions for "Widgets" folder in "WidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -142,6 +149,7 @@
 		FA7141112CD76FA300CA5F8A /* Widgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				FA6AFABD2D14BC000045F4FE /* Exceptions for "Widgets" folder in "SchoolHub" target */,
 				FA7141212CD76FA400CA5F8A /* Exceptions for "Widgets" folder in "WidgetsExtension" target */,
 			);
 			path = Widgets;
@@ -612,7 +620,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -652,7 +660,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

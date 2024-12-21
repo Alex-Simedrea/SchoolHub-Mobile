@@ -31,7 +31,7 @@ class LoginViewModel: ObservableObject {
 
         if cookieResponse.response?.statusCode == 200 {
             let oldCookie = HTTPCookieStorage.shared.cookies(
-                for: URL(string: "https://noteincatalog.ro")!
+                for: URL(string: requestUrl)!
             )?.first!
 
             if let oldCookie = oldCookie {

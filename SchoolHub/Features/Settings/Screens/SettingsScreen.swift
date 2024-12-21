@@ -20,15 +20,6 @@ struct SettingsScreen: View {
     @State private var isConfirmingDeleteAll: Bool = false
     @State private var isConfirmingDeleteGradesAndAbsences: Bool = false
     @State private var isShowingFormatGuide: Bool = false
-//    @State private var cookiestore: String? = ""
-//
-//    func getCookie() -> String {
-//        let cookie = HTTPCookieStorage.shared.cookies(
-//            for: URL(string: "https://noteincatalog.ro")!
-//        )?.first
-//
-//        return String(describing: cookie)
-//    }
 
     var body: some View {
         NavigationStack {
@@ -121,7 +112,7 @@ struct SettingsScreen: View {
                     }
                 }
                 .headerProminence(.increased)
-                Section("Import from NIC") {
+                Section("Import from other gradebooks") {
                     if Auth.shared.loggedIn {
                         HStack(spacing: 12) {
                             Image(systemName: "person.circle.fill")
@@ -139,15 +130,6 @@ struct SettingsScreen: View {
                             isLoginPresented = true
                         }
                     }
-//                    let cookie = HTTPCookieStorage.shared.cookies(
-//                        for: URL(string: "https://noteincatalog.ro")!
-//                    )?.first
-//                    Button("Get cookie") {
-//                        cookiestore = String(describing: getCookie())
-//                    }
-//                    Text(cookiestore ?? "no cookie")
-//                    Text("\(String(describing: HTTPCookieStorage.shared.cookies(for: URL(string: "https://noteincatalog.ro")!)) ?? "no cookie")")
-//                    let _ = print(Auth.shared.getCredentials().cookie ?? "no cookie")
                 }
                 .headerProminence(.increased)
                 Button {
