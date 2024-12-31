@@ -10,10 +10,15 @@
 		FA107CBE2CC3C0C60097138E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA107CBD2CC3C0C60097138E /* Alamofire */; };
 		FA2AE18B2CD42C7E00E09E41 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA2AE18A2CD42C7E00E09E41 /* SFSymbolsPicker */; };
 		FA2AE18E2CD43A4400E09E41 /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA2AE18D2CD43A4400E09E41 /* SymbolPicker */; };
+		FA2BA00A2D22C41C003311F5 /* Toasts in Frameworks */ = {isa = PBXBuildFile; productRef = FA2BA0092D22C41C003311F5 /* Toasts */; };
 		FA49E22A2CE0EEF200ADE397 /* SchoolHubWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA71410E2CD76FA300CA5F8A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410D2CD76FA200CA5F8A /* WidgetKit.framework */; };
 		FA7141102CD76FA300CA5F8A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410F2CD76FA300CA5F8A /* SwiftUI.framework */; };
 		FA71411D2CD76FA400CA5F8A /* WidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA72D9232D1D4CC10019D302 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = FA72D9222D1D4CC10019D302 /* GoogleGenerativeAI */; };
+		FA94DA662D16BEE400ACDD63 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410D2CD76FA200CA5F8A /* WidgetKit.framework */; };
+		FA94DA672D16BEE400ACDD63 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA71410F2CD76FA300CA5F8A /* SwiftUI.framework */; };
+		FA94DA742D16BEE600ACDD63 /* LiveActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA94DA652D16BEE400ACDD63 /* LiveActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,6 +35,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = FA71410B2CD76FA200CA5F8A;
 			remoteInfo = WidgetsExtension;
+		};
+		FA94DA722D16BEE600ACDD63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA6C53D62CBB038900A63670 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA94DA642D16BEE400ACDD63;
+			remoteInfo = LiveActivityExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -62,6 +74,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				FA71411D2CD76FA400CA5F8A /* WidgetsExtension.appex in Embed Foundation Extensions */,
+				FA94DA742D16BEE600ACDD63 /* LiveActivityExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +87,8 @@
 		FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA71410D2CD76FA200CA5F8A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FA71410F2CD76FA300CA5F8A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FA94DA652D16BEE400ACDD63 /* LiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA94DA752D16BEE600ACDD63 /* LiveActivityExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LiveActivityExtension.entitlements; sourceTree = "<group>"; };
 		FADFE9A22CD77BD500E3EB71 /* WidgetsExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetsExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,19 +115,42 @@
 			);
 			target = FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */;
 		};
-		FA6AFABD2D14BC000045F4FE /* Exceptions for "Widgets" folder in "SchoolHub" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				TimetableLiveActivity.swift,
-			);
-			target = FA6C53DD2CBB038900A63670 /* SchoolHub */;
-		};
 		FA7141212CD76FA400CA5F8A /* Exceptions for "Widgets" folder in "WidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = FA71410B2CD76FA200CA5F8A /* WidgetsExtension */;
+		};
+		FA94DA792D16BEE600ACDD63 /* Exceptions for "LiveActivity" folder in "LiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FA94DA642D16BEE400ACDD63 /* LiveActivityExtension */;
+		};
+		FA94DA7B2D16BF8C00ACDD63 /* Exceptions for "LiveActivity" folder in "SchoolHub" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TimetableLiveActivity.swift,
+			);
+			target = FA6C53DD2CBB038900A63670 /* SchoolHub */;
+		};
+		FA94DA862D16C0A500ACDD63 /* Exceptions for "SchoolHub" folder in "LiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/CalendarExtension.swift,
+				Extensions/DateExtension.swift,
+				Extensions/DoubleExtension.swift,
+				Extensions/ProcessInfoExtension.swift,
+				Features/Common/Models/Absence.swift,
+				Features/Common/Models/CodableDTOs.swift,
+				Features/Common/Models/Grade.swift,
+				Features/Common/Models/Subject.swift,
+				Features/Common/Models/TimeSlot.swift,
+				Features/Common/Models/Weekday.swift,
+			);
+			target = FA94DA642D16BEE400ACDD63 /* LiveActivityExtension */;
 		};
 		FADFE9A92CD77C8D00E3EB71 /* Exceptions for "SchoolHub" folder in "WidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -142,6 +180,7 @@
 				FA2168622CDFBDDC00B94EA0 /* Exceptions for "SchoolHub" folder in "SchoolHub" target */,
 				FADFE9A92CD77C8D00E3EB71 /* Exceptions for "SchoolHub" folder in "WidgetsExtension" target */,
 				FA49E2372CE0F21E00ADE397 /* Exceptions for "SchoolHub" folder in "SchoolHubWatch Watch App" target */,
+				FA94DA862D16C0A500ACDD63 /* Exceptions for "SchoolHub" folder in "LiveActivityExtension" target */,
 			);
 			path = SchoolHub;
 			sourceTree = "<group>";
@@ -149,10 +188,18 @@
 		FA7141112CD76FA300CA5F8A /* Widgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				FA6AFABD2D14BC000045F4FE /* Exceptions for "Widgets" folder in "SchoolHub" target */,
 				FA7141212CD76FA400CA5F8A /* Exceptions for "Widgets" folder in "WidgetsExtension" target */,
 			);
 			path = Widgets;
+			sourceTree = "<group>";
+		};
+		FA94DA682D16BEE400ACDD63 /* LiveActivity */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FA94DA7B2D16BF8C00ACDD63 /* Exceptions for "LiveActivity" folder in "SchoolHub" target */,
+				FA94DA792D16BEE600ACDD63 /* Exceptions for "LiveActivity" folder in "LiveActivityExtension" target */,
+			);
+			path = LiveActivity;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -169,9 +216,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA2BA00A2D22C41C003311F5 /* Toasts in Frameworks */,
 				FA107CBE2CC3C0C60097138E /* Alamofire in Frameworks */,
 				FA2AE18B2CD42C7E00E09E41 /* SFSymbolsPicker in Frameworks */,
 				FA2AE18E2CD43A4400E09E41 /* SymbolPicker in Frameworks */,
+				FA72D9232D1D4CC10019D302 /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +230,15 @@
 			files = (
 				FA7141102CD76FA300CA5F8A /* SwiftUI.framework in Frameworks */,
 				FA71410E2CD76FA300CA5F8A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA94DA622D16BEE400ACDD63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA94DA672D16BEE400ACDD63 /* SwiftUI.framework in Frameworks */,
+				FA94DA662D16BEE400ACDD63 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,9 +257,11 @@
 		FA6C53D52CBB038900A63670 = {
 			isa = PBXGroup;
 			children = (
+				FA94DA752D16BEE600ACDD63 /* LiveActivityExtension.entitlements */,
 				FA6C53E02CBB038900A63670 /* SchoolHub */,
 				FA7141112CD76FA300CA5F8A /* Widgets */,
 				FA49E21E2CE0EEF100ADE397 /* SchoolHubWatch Watch App */,
+				FA94DA682D16BEE400ACDD63 /* LiveActivity */,
 				FA107CBF2CC3C0D90097138E /* Frameworks */,
 				FA6C53DF2CBB038900A63670 /* Products */,
 				FADFE9A22CD77BD500E3EB71 /* WidgetsExtension.entitlements */,
@@ -214,6 +274,7 @@
 				FA6C53DE2CBB038900A63670 /* SchoolHub.app */,
 				FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */,
 				FA49E21D2CE0EEF100ADE397 /* SchoolHubWatch Watch App.app */,
+				FA94DA652D16BEE400ACDD63 /* LiveActivityExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -259,6 +320,7 @@
 			dependencies = (
 				FA71411C2CD76FA400CA5F8A /* PBXTargetDependency */,
 				FA49E2292CE0EEF200ADE397 /* PBXTargetDependency */,
+				FA94DA732D16BEE600ACDD63 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FA6C53E02CBB038900A63670 /* SchoolHub */,
@@ -268,6 +330,8 @@
 				FA107CBD2CC3C0C60097138E /* Alamofire */,
 				FA2AE18A2CD42C7E00E09E41 /* SFSymbolsPicker */,
 				FA2AE18D2CD43A4400E09E41 /* SymbolPicker */,
+				FA72D9222D1D4CC10019D302 /* GoogleGenerativeAI */,
+				FA2BA0092D22C41C003311F5 /* Toasts */,
 			);
 			productName = SchoolHub;
 			productReference = FA6C53DE2CBB038900A63670 /* SchoolHub.app */;
@@ -295,6 +359,28 @@
 			productReference = FA71410C2CD76FA200CA5F8A /* WidgetsExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		FA94DA642D16BEE400ACDD63 /* LiveActivityExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA94DA782D16BEE600ACDD63 /* Build configuration list for PBXNativeTarget "LiveActivityExtension" */;
+			buildPhases = (
+				FA94DA612D16BEE400ACDD63 /* Sources */,
+				FA94DA622D16BEE400ACDD63 /* Frameworks */,
+				FA94DA632D16BEE400ACDD63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FA94DA682D16BEE400ACDD63 /* LiveActivity */,
+			);
+			name = LiveActivityExtension;
+			packageProductDependencies = (
+			);
+			productName = LiveActivityExtension;
+			productReference = FA94DA652D16BEE400ACDD63 /* LiveActivityExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -314,6 +400,9 @@
 					FA71410B2CD76FA200CA5F8A = {
 						CreatedOnToolsVersion = 16.1;
 					};
+					FA94DA642D16BEE400ACDD63 = {
+						CreatedOnToolsVersion = 16.1;
+					};
 				};
 			};
 			buildConfigurationList = FA6C53D92CBB038900A63670 /* Build configuration list for PBXProject "SchoolHub" */;
@@ -330,6 +419,8 @@
 				FA107CBC2CC3C0C60097138E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FA2AE1892CD42C7E00E09E41 /* XCRemoteSwiftPackageReference "SFSymbolsPicker" */,
 				FA2AE18C2CD43A4400E09E41 /* XCRemoteSwiftPackageReference "SymbolPicker" */,
+				FA72D9212D1D4CC10019D302 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				FA2BA0082D22C41C003311F5 /* XCRemoteSwiftPackageReference "swiftui-toasts" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA6C53DF2CBB038900A63670 /* Products */;
@@ -339,6 +430,7 @@
 				FA6C53DD2CBB038900A63670 /* SchoolHub */,
 				FA71410B2CD76FA200CA5F8A /* WidgetsExtension */,
 				FA49E21C2CE0EEF100ADE397 /* SchoolHubWatch Watch App */,
+				FA94DA642D16BEE400ACDD63 /* LiveActivityExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -359,6 +451,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA71410A2CD76FA200CA5F8A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA94DA632D16BEE400ACDD63 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -389,6 +488,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FA94DA612D16BEE400ACDD63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -402,6 +508,11 @@
 			isa = PBXTargetDependency;
 			target = FA71410B2CD76FA200CA5F8A /* WidgetsExtension */;
 			targetProxy = FA71411B2CD76FA400CA5F8A /* PBXContainerItemProxy */;
+		};
+		FA94DA732D16BEE600ACDD63 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA94DA642D16BEE400ACDD63 /* LiveActivityExtension */;
+			targetProxy = FA94DA722D16BEE600ACDD63 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -423,11 +534,12 @@
 				INFOPLIST_KEY_CFBundleDisplayName = SchoolHubWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = ro.attractivestar.SchoolHubMobile;
+				INFOPLIST_KEY_WKSupportsLiveActivityLaunchAttributeTypes = TimetableAttributes;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -456,11 +568,12 @@
 				INFOPLIST_KEY_CFBundleDisplayName = SchoolHubWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = ro.attractivestar.SchoolHubMobile;
+				INFOPLIST_KEY_WKSupportsLiveActivityLaunchAttributeTypes = TimetableAttributes;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -691,7 +804,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.Widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -720,8 +833,68 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FA94DA762D16BEE600ACDD63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = LiveActivityExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZW39N29FM;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.LiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA94DA772D16BEE600ACDD63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = LiveActivityExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4ZW39N29FM;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.attractivestar.SchoolHubMobile.LiveActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
@@ -770,6 +943,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		FA94DA782D16BEE600ACDD63 /* Build configuration list for PBXNativeTarget "LiveActivityExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA94DA762D16BEE600ACDD63 /* Debug */,
+				FA94DA772D16BEE600ACDD63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -797,12 +979,28 @@
 				minimumVersion = 1.5.3;
 			};
 		};
+		FA2BA0082D22C41C003311F5 /* XCRemoteSwiftPackageReference "swiftui-toasts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sunghyun-k/swiftui-toasts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
 		FA6C53F72CBBA53D00A63670 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.57.0;
+			};
+		};
+		FA72D9212D1D4CC10019D302 /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google-gemini/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -822,6 +1020,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA2AE18C2CD43A4400E09E41 /* XCRemoteSwiftPackageReference "SymbolPicker" */;
 			productName = SymbolPicker;
+		};
+		FA2BA0092D22C41C003311F5 /* Toasts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA2BA0082D22C41C003311F5 /* XCRemoteSwiftPackageReference "swiftui-toasts" */;
+			productName = Toasts;
+		};
+		FA72D9222D1D4CC10019D302 /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA72D9212D1D4CC10019D302 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,5 +1,5 @@
 {
-  "originHash" : "73a5f6c63a3f858e45c844437488e01d90c1cc35611e8acdc97ecc4e4e1136b7",
+  "originHash" : "b082d7fb639df5fdf35e794217feef0949f0135b36ce1e750544f85bed7c929c",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "ea6a94b7dddffd0ca4d0f29252d95310b84dec84",
         "version" : "5.10.0"
+      }
+    },
+    {
+      "identity" : "generative-ai-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google-gemini/generative-ai-swift",
+      "state" : {
+        "revision" : "44b8ce120425f9cf53ca756f3434ca2c2696f8bd",
+        "version" : "0.5.6"
       }
     },
     {
@@ -26,6 +35,24 @@
       "state" : {
         "revision" : "7c80ce6f142164b0201871e580b021d1b2c69804",
         "version" : "0.57.0"
+      }
+    },
+    {
+      "identity" : "swiftui-toasts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sunghyun-k/swiftui-toasts",
+      "state" : {
+        "revision" : "a9e96531424d3d0f6891076efefe86bb911448dc",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swiftui-window-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sunghyun-k/swiftui-window-overlay.git",
+      "state" : {
+        "revision" : "af0adae224dfe27e094bdef19a71fa4cc020cfbb",
+        "version" : "1.0.1"
       }
     },
     {

@@ -37,7 +37,6 @@ struct StatCard: View {
                 .lineSpacing(-2)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
-//                .frame(height: height, alignment: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(12)
@@ -51,6 +50,8 @@ struct SubjectScreen: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
     @State private var isTimeStampPickerPresented = false
+    
+    @StateObject var averagesViewModel = AveragesViewModel()
 
     var grades: [Grade] {
         subject.grades?.sorted { $0.date > $1.date } ?? []
@@ -65,7 +66,6 @@ struct SubjectScreen: View {
     }
 
     var body: some View {
-//        ScrollView {
         ZStack(alignment: .top) {
             if !ProcessInfo.processInfo.isOnMac {
                 Circle()
@@ -153,13 +153,14 @@ struct SubjectScreen: View {
                     }
                 }
                 .headerProminence(.increased)
-                
+
                 Section {
                     NavigationLink(
                         "Average calculator",
                         destination: SubjectAverageView(
                             subject: subject,
-                            targetAverage: 10
+                            targetAverage: 10,
+                            averagesViewModel: averagesViewModel
                         )
                     )
                 }
@@ -239,7 +240,6 @@ struct SubjectScreen: View {
             .contentMargins(.top, 0, for: .scrollContent)
             .scrollContentBackground(.hidden)
         }
-//        }
         .background(Color(.systemGroupedBackground))
         .toolbar {
             Button(action: { dismiss() }) {
@@ -259,6 +259,9 @@ struct SubjectScreen: View {
         .navigationBarBackButtonHidden()
         .sheet(isPresented: $isTimeStampPickerPresented) {
             AddTimeSlotScreen(subject: subject)
+        }
+        .onAppear {
+            averagesViewModel.updateSimulations(with: [subject])
         }
     }
 }

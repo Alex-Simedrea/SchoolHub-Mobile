@@ -25,7 +25,8 @@ struct SubjectRowView: View {
         NavigationLink(
             destination: SubjectAverageView(
                 subject: simulatedSubject.subject,
-                targetAverage: 10
+                targetAverage: 10,
+                averagesViewModel: viewModel
             )
         ) {
             HStack {
@@ -86,6 +87,9 @@ struct SubjectRowView: View {
                     .foregroundStyle(.foreground)
                 }
             }
+        }
+        .onChange(of: simulatedSubject.simulatedAverage) {
+            average = simulatedSubject.simulatedAverage
         }
     }
 }

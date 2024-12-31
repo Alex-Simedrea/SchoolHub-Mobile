@@ -5,7 +5,9 @@
 //  Created by Alexandru Simedrea on 13.10.2024.
 //
 
+#if canImport(ActivityKit)
 import ActivityKit
+#endif
 import SwiftData
 import SwiftUI
 
@@ -20,129 +22,16 @@ struct HomeScreen: View {
     @Binding var selectedTab: Tabs
     @State private var firstAppear = true
 
-    var timeSlotsPair: (current: TimeSlot?, next: TimeSlot?) {
-        var currentOrNextTimeSlot = timeSlots.currentOrNextTimeSlot
-
-        let today = Date.now.weekDay
-        let timeSlotsToday = timeSlots.filter { $0.weekday == today }
-
-        if let current = currentOrNextTimeSlot {
-            if current.weekday == today {
-                let nextTimeSlot = timeSlotsToday.first {
-                    $0.isLater(than: current)
-                }
-
-                return (current, nextTimeSlot)
-            }
-        }
-
-        return (nil, nil)
-    }
-
     var body: some View {
         NavigationStack {
             List {
-                Button("start") {
-                    if let current = timeSlotsPair.current {
-                        let initialContentState: TimetableAttributes.ContentState
-
-                        let startTime = current.startTime
-                        let timeComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: startTime)
-                        var todayComponents = Calendar.current.dateComponents([.year, .month, .day], from: .now)
-                        todayComponents.hour = timeComponents.hour
-                        todayComponents.minute = timeComponents.minute
-                        todayComponents.second = timeComponents.second
-                        let startDate = Calendar.current.date(from: todayComponents)
-
-                        let endTime = current.endTime
-                        let endTimeComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: endTime)
-                        todayComponents.hour = endTimeComponents.hour
-                        todayComponents.minute = endTimeComponents.minute
-                        todayComponents.second = endTimeComponents.second
-                        let endDate = Calendar.current.date(from: todayComponents)
-
-                        if current.startTime.isTimeEarlier(than: .now) {
-                            initialContentState = TimetableAttributes.ContentState(
-                                displayName: current.subject?.displayName ?? "",
-                                color: current.subject?.color.rawValue ?? "blue",
-                                symbolName: current.subject?.symbolName ?? "graduationcap.fill",
-                                startTime: nil,
-                                endTime: endDate?
-                                    .ISO8601Format() ?? Date.now.ISO8601Format(),
-                                nextTimeSlot: timeSlotsPair.next == nil ? nil : .init(
-                                    displayName: timeSlotsPair.next?.subject?.displayName ?? "",
-                                    color: timeSlotsPair.next?.subject?.color.rawValue ?? "blue",
-                                    symbolName: timeSlotsPair.next?.subject?.symbolName ?? "graduationcap.fill"
-                                )
-                            )
-                        } else {
-                            initialContentState = TimetableAttributes.ContentState(
-                                displayName: current.subject?.displayName ?? "",
-                                color: current.subject?.color.rawValue ?? "blue",
-                                symbolName: current.subject?.symbolName ?? "graduationcap.fill",
-                                startTime: startDate?
-                                    .ISO8601Format() ?? Date.now.ISO8601Format(),
-                                endTime: nil,
-                                nextTimeSlot: nil
-                            )
-                        }
-
-                        do {
-                            let activity = try Activity<TimetableAttributes>.request(
-                                attributes: .init(),
-                                content: .init(
-                                    state: initialContentState,
-                                    staleDate: .now.addingTimeInterval(60 * 60 * 8) // 8 hours
-
-                                ),
-                                pushType: .token
-                            )
-                            print("Live Activity started: \(activity.id)")
-                        } catch {
-                            print("Failed to start Live Activity: \(error.localizedDescription)")
-                        }
-                    }
-                }
-                Button("start demo") {
-                    let initialContentState = TimetableAttributes.ContentState(
-                        displayName: "Test",
-                        color: "blue",
-                        symbolName: "graduationcap.fill",
-                        startTime: nil,
-                        endTime: Date.now.addingTimeInterval(60 * 60).ISO8601Format(),
-                        nextTimeSlot: .init(
-                            displayName: "Text",
-                            color: "green",
-                            symbolName: "flask.fill"
-                        )
-                    )
-
-                    do {
-                        let activity = try Activity<TimetableAttributes>.request(
-                            attributes: .init(),
-                            content: .init(
-                                state: initialContentState,
-                                staleDate: .now.addingTimeInterval(60 * 60 * 8) // 8 hours
-
-                            ),
-                            pushType: .token
-                        )
-                        print("Live Activity started: \(activity.id)")
-                    } catch {
-                        print("Failed to start Live Activity: \(error.localizedDescription)")
-                    }
-                }
                 Section(header: Text("Stats")) {
                     StatsCard(
                         title: "Grades Stats",
                         systemName: "chart.bar.fill",
                         color: Color(.blue),
                         values: [
-                            String(
-                                format: "%.2f",
-                                viewModel
-                                    .getOverallAverage(forSubjects: subjects)
-                            ),
+                            viewModel.getOverallAverage(forSubjects: subjects).gradeFormatted,
                             String(viewModel.getGradesCountThisWeek(forSubjects: subjects)),
                             String(viewModel.getGradesCountThisMonth(forSubjects: subjects)),
                         ],

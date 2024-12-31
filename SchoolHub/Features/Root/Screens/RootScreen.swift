@@ -13,7 +13,7 @@ enum Tabs: Hashable {
     case subjects
     case subject(Subject)
     case timetable
-    case calculator
+    case tools
     case settings
 }
 
@@ -78,8 +78,8 @@ struct RootScreen: View {
             Tab("Timetable", systemImage: "calendar", value: .timetable) {
                 TimetableScreen()
             }
-            Tab("Calculator", systemImage: "number", value: .calculator) {
-                AveragesScreen()
+            Tab("Tools", systemImage: "hammer.fill", value: .tools) {
+                ToolsScreen()
             }
             Tab("Settings", systemImage: "gear", value: .settings) {
                 SettingsScreen()

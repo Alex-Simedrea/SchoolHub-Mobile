@@ -19,15 +19,13 @@ struct AverageChart: View {
     }
 
     var selectedDate: Date? {
-        if let rawSelectedDate {
-            return averageChangePoints.first(where: {
-                let endOfDay = endOfDay(for: $0.date)
+        guard let rawSelectedDate = rawSelectedDate else { return nil }
 
-                return ($0.date ... endOfDay).contains(rawSelectedDate)
+        return averageChangePoints
+            .min(by: { point1, point2 in
+                abs(point1.date.timeIntervalSince(rawSelectedDate)) <
+                    abs(point2.date.timeIntervalSince(rawSelectedDate))
             })?.date
-        }
-
-        return nil
     }
 
     var body: some View {
@@ -50,7 +48,6 @@ struct AverageChart: View {
                 )
                 .foregroundStyle(Color.gray.opacity(0.3))
                 .offset(yStart: -10)
-                //                .zIndex(-1)
                 .annotation(
                     position: .top, spacing: 0,
                     overflowResolution: .init(
@@ -60,7 +57,7 @@ struct AverageChart: View {
                 ) {
                     VStack(alignment: .leading) {
                         Text(
-                            "\(averageChangePoints.first(where: { $0.date == selectedDate })?.value ?? 0, format: .number)"
+                            "\((averageChangePoints.first(where: { $0.date == selectedDate })?.value ?? 0.0).gradeFormatted)"
                         )
                         .font(.title3.bold())
 
@@ -70,37 +67,16 @@ struct AverageChart: View {
                     }
                     .padding(6)
                     .background {
-                        RoundedRectangle(cornerRadius: 4)
-                            .foregroundStyle(Color.gray.opacity(0.12))
+                        RoundedRectangle(cornerRadius: 6)
+                            .foregroundStyle(
+                                Color(.systemGroupedBackground)
+                            )
                     }
                 }
             }
-
-            RuleMark(
-                x: .value("Today", Date(), unit: .day)
-            )
-            .opacity(0)
         }
-        .chartXAxis {
-            AxisMarks(
-                preset: .aligned,
-                values: .stride(by: .month)
-            ) { _ in
-                AxisTick()
-                AxisGridLine()
-                AxisValueLabel(format: .dateTime.month(.narrow))
-            }
-        }
+        .chartXAxis(.visible)
         .chartYAxis(.visible)
-        .chartScrollableAxes(.horizontal)
-        .chartXVisibleDomain(length: 3600 * 24 * 30 * 12)
-        .chartScrollTargetBehavior(
-            .valueAligned(
-                matching: .init(hour: 0),
-                majorAlignment: .matching(.init(day: 1))
-            )
-        )
-        .chartScrollPosition(x: $scrollPosition)
         .chartXSelection(value: $rawSelectedDate)
     }
 }
@@ -344,12 +320,12 @@ struct GradesAverageEvolutionCard: View {
             return "You have 1 more point this month compared to last month."
         case let x where x > 1 || (x > 0 && x < 1):
             return
-                "You have \(String(format: "%.2f", abs(x))) more points this month compared to last month."
+                "You have \(abs(x).gradeFormatted) more points this month compared to last month."
         case -1:
             return "You have 1 less point this month compared to last month."
         default:
             return
-                "You have \(String(format: "%.2f", abs(difference))) less points this month compared to last month."
+                "You have \(abs(difference).gradeFormatted) less points this month compared to last month."
         }
     }
 
@@ -386,7 +362,7 @@ struct GradesAverageEvolutionCard: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(averageThisMonth == 0
                             ? "No grades"
-                            : "\(String(format: "%.2f", averageThisMonth))")
+                            : "\(averageThisMonth.gradeFormatted)")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .padding(.leading, 40)
@@ -412,7 +388,7 @@ struct GradesAverageEvolutionCard: View {
                         Text(
                             averageLastMonth == 0
                                 ? "No grades"
-                                : "\(String(format: "%.2f", averageLastMonth))"
+                                : "\(averageLastMonth.gradeFormatted)"
                         )
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -496,7 +472,7 @@ struct GradesDetailScreen: View {
                                 viewModel
                                     .estimatedOverallAverage(for: subjects) == 0
                                     ? "No grades"
-                                    : "\(String(format: "%.2f", viewModel.estimatedOverallAverage(for: subjects)))"
+                                    : "\(viewModel.estimatedOverallAverage(for: subjects).gradeFormatted)"
                             )
                             .font(.title2.bold())
                         }

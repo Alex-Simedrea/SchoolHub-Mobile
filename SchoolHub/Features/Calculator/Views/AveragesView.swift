@@ -18,7 +18,7 @@ struct AveragesView: View {
                 LabeledContent {
                     HStack {
                         Text(
-                            String(format: "%.2f", viewModel.overallAverage)
+                            viewModel.overallAverage.gradeFormatted
                         )
                         .foregroundStyle(.primary)
                         .font(.headline)
@@ -59,7 +59,11 @@ struct AveragesView: View {
                     ForEach(viewModel.improvementSuggestions, id: \.0.id) { simulatedSubject, increase in
                         NavigationLink(destination:
                             NavigationStack {
-                                SubjectAverageView(subject: simulatedSubject.subject, targetAverage: simulatedSubject.simulatedAverage + increase)
+                                SubjectAverageView(
+                                    subject: simulatedSubject.subject,
+                                    targetAverage: simulatedSubject.simulatedAverage + increase,
+                                    averagesViewModel: viewModel
+                                )
                             }) {
                                 HStack {
                                     RoundedRectangle(cornerRadius: 6)
@@ -87,6 +91,15 @@ struct AveragesView: View {
             Section("Subjects") {
                 ForEach(viewModel.simulatedSubjects.sorted { $0.subject.displayName < $1.subject.displayName }) { simSubject in
                     SubjectRowView(simulatedSubject: simSubject, viewModel: viewModel)
+                }
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .destructiveAction) {
+                Button {
+                    viewModel.resetAll()
+                } label: {
+                    Image(systemName: "arrow.uturn.backward")
                 }
             }
         }

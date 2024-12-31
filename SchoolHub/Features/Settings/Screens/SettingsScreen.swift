@@ -14,6 +14,7 @@ struct SettingsScreen: View {
     @Query private var subjects: [Subject]
     @Query private var grades: [Grade]
     @Query private var absences: [Absence]
+    @Query private var timeSlots: [TimeSlot]
     @State private var json: String = ""
     @Environment(\.modelContext) private var context
     @State private var isLoginPresented: Bool = false
@@ -119,7 +120,21 @@ struct SettingsScreen: View {
                                 .resizable()
                                 .frame(width: 40, height: 40)
                                 .foregroundStyle(.gray)
-                            Text(Auth.shared.getCredentials().username ?? "Username")
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(Auth.shared.getCredentials().username ?? "Username")
+                                Text(Auth.shared.getCredentials().requestUrl ?? "URL")
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(.secondary)
+                                    .contextMenu {
+                                        Button {
+                                            UIPasteboard.general.setValue(
+                                                Auth.shared.getCredentials().requestUrl ?? "",
+                                                forPasteboardType: UTType.plainText.identifier)
+                                        } label: {
+                                            Label("Copy URL", systemImage: "doc.on.doc")
+                                        }
+                                    }
+                            }
                         }
                         Button("Log out", role: .destructive) {
                             HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
@@ -132,6 +147,25 @@ struct SettingsScreen: View {
                     }
                 }
                 .headerProminence(.increased)
+                
+#if canImport(ActivityKit)
+                Section("Settings") {
+                    NavigationLink(destination: LiveActivitySettingsScreen()) {
+                        HStack(spacing: 12) {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.blue)
+                                .frame(width: 30, height: 30)
+                                .overlay {
+                                    Image(systemName: "clock.badge.fill")
+                                        .foregroundStyle(.white)
+                                }
+                            Text("Live Activity")
+                        }
+                    }
+                }
+                .headerProminence(.increased)
+#endif
+                
                 Button {
                     do {
                         let jsonData = try subjects.exportToJSON()
@@ -195,6 +229,15 @@ struct SettingsScreen: View {
                     isPresented: $isConfirmingDeleteAll)
                 {
                     Button("Delete", role: .destructive) {
+                        for grade in grades {
+                            context.delete(grade)
+                        }
+                        for absence in absences {
+                            context.delete(absence)
+                        }
+                        for timeSlot in timeSlots {
+                            context.delete(timeSlot)
+                        }
                         for subject in subjects {
                             context.delete(subject)
                         }

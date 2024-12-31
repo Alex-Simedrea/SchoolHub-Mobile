@@ -5,6 +5,7 @@
 //  Created by Alexandru Simedrea on 19.12.2024.
 //
 
+#if canImport(ActivityKit)
 import ActivityKit
 import Alamofire
 import Foundation
@@ -26,22 +27,24 @@ class LiveActivityManager: NSObject, ObservableObject {
                 for await data in Activity<TimetableAttributes>.pushToStartTokenUpdates {
                     let token = data.map { String(format: "%02x", $0) }.joined()
                     
-                    let keychain = KeychainSwift()
-                    let deviceToken = keychain.get("deviceToken") ?? ""
-                    
-                    do {
-                        let _ = try await AF.request(
-                            API.shared.baseURL.appendingPathComponent("start-token"),
-                            method: .post,
-                            parameters: [
-                                "token": token
-                            ],
-                            encoding: JSONEncoding.default,
-                            headers: .init([.authorization(bearerToken: deviceToken)])
-                        ).serializingData().value
-                    } catch {
-                        print(error)
+                    AF.request(TimetableRouter.startToken(token: token)).responseString { response in
+                        print(response.result)
+                        print(response.request?.allHTTPHeaderFields)
                     }
+                    
+                    /* do {
+                         let _ = try await AF.request(
+                             API.shared.baseURL.appendingPathComponent("auth/start-token"),
+                             method: .post,
+                             parameters: [
+                                 "token": token
+                             ],
+                             encoding: JSONEncoding.default,
+                             headers: .init([.authorization(bearerToken: deviceToken)])
+                         ).serializingData().value
+                     } catch {
+                         print(error)
+                     } */
                     
                     print("Activity PushToStart Token: \(token)")
 //                        Logger.liveactivity.info("Activity PushToStart Token: \(token, privacy: .public)")
@@ -169,3 +172,5 @@ class LiveActivityManager: NSObject, ObservableObject {
              }
          } */
 }
+
+#endif

@@ -6,14 +6,57 @@
 //
 
 import Foundation
+import SwiftData
 import SwiftUI
 
 class AveragesViewModel: ObservableObject {
     @AppStorage("TargetOverallAverage") var targetOverallAverage: Double = 10
     @Published var simulatedSubjects: [AverageSubjectSimulation] = []
+    @Published var subjectSimulations: [PersistentIdentifier: GradesSubjectSimulation] = [:]
     
     func updateSimulations(with subjects: [Subject]) {
         simulatedSubjects = subjects.map { AverageSubjectSimulation(subject: $0) }
+        
+        // Initialize grade simulations for each subject if not exists
+        for subject in subjects {
+            if subjectSimulations[subject.id] == nil {
+                subjectSimulations[subject.id] = GradesSubjectSimulation(subject: subject)
+            }
+        }
+    }
+    
+    func getSimulation(for subject: Subject) -> GradesSubjectSimulation {
+        if let simulation = subjectSimulations[subject.id] {
+            return simulation
+        }
+        let newSimulation = GradesSubjectSimulation(subject: subject)
+        subjectSimulations[subject.id] = newSimulation
+        return newSimulation
+    }
+    
+    func updateSimulation(_ simulation: GradesSubjectSimulation, for subject: Subject) {
+        subjectSimulations[subject.id] = simulation
+        // Update the corresponding simulated subject's average
+        if let index = simulatedSubjects.firstIndex(where: { $0.id == subject.id }) {
+            simulatedSubjects[index].simulatedAverage = simulation.average
+        }
+    }
+    
+    func resetAll() {
+        // Reset all simulated subjects to their original averages
+        simulatedSubjects = simulatedSubjects.map { subject in
+            var resetSubject = subject
+            resetSubject.simulatedAverage = Int(round(subject.originalAverage ?? 10))
+            return resetSubject
+        }
+        
+        // Clear all simulated grades
+        subjectSimulations = [:]
+        
+        // Reinitialize empty simulations
+        for subject in simulatedSubjects.map({ $0.subject }) {
+            subjectSimulations[subject.id] = GradesSubjectSimulation(subject: subject)
+        }
     }
     
     var overallAverage: Double {
@@ -63,7 +106,8 @@ class AveragesViewModel: ObservableObject {
             
             let viewModel = SubjectAverageViewModel(
                 subject: simSubject.subject,
-                targetAverage: targetAverage
+                targetAverage: targetAverage,
+                averagesViewModel: .init()
             )
             viewModel.targetAverage = targetAverage
             
@@ -88,7 +132,8 @@ class AveragesViewModel: ObservableObject {
                     
                     let viewModel = SubjectAverageViewModel(
                         subject: simSubject.subject,
-                        targetAverage: newTargetAverage
+                        targetAverage: newTargetAverage,
+                        averagesViewModel: .init()
                     )
                     viewModel.targetAverage = newTargetAverage
                     

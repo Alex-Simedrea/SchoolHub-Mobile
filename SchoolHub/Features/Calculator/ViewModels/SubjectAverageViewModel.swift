@@ -8,8 +8,27 @@
 import Foundation
 
 class SubjectAverageViewModel: ObservableObject {
+    private let averagesViewModel: AveragesViewModel
+    private let subject: Subject
     @Published var simulation: GradesSubjectSimulation
     @Published var targetAverage: Int
+    
+    init(subject: Subject, targetAverage: Int?, averagesViewModel: AveragesViewModel) {
+        self.subject = subject
+        self.averagesViewModel = averagesViewModel
+        self.simulation = averagesViewModel.getSimulation(for: subject)
+        self.targetAverage = targetAverage ?? 10
+    }
+    
+    func addSimulatedGrade(_ grade: Int) {
+        simulation.simulatedGrades.append(GradeSimulation(value: grade, isSimulated: true))
+        averagesViewModel.updateSimulation(simulation, for: subject)
+    }
+    
+    func removeSimulatedGrade(withID id: UUID) {
+        simulation.simulatedGrades.removeAll { $0.id == id }
+        averagesViewModel.updateSimulation(simulation, for: subject)
+    }
     
     struct GradeSuggestion: Identifiable {
         let id = UUID()
@@ -56,10 +75,5 @@ class SubjectAverageViewModel: ObservableObject {
             }
             return s1.count < s2.count
         }
-    }
-    
-    init(subject: Subject, targetAverage: Int?) {
-        self.simulation = GradesSubjectSimulation(subject: subject)
-        self.targetAverage = targetAverage ?? 10
     }
 }

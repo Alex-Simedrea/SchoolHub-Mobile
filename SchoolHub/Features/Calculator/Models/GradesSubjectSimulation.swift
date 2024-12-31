@@ -26,6 +26,13 @@ struct GradesSubjectSimulation {
         return Int(avg)
     }
     
+    var averageDouble: Double {
+        guard !allGrades.isEmpty else { return 10 }
+        let sum = Double(allGrades.map { $0.value }.reduce(0, +))
+        let avg = sum / Double(allGrades.count)
+        return avg
+    }
+    
     init(subject: Subject) {
         self.subject = subject
         self.simulatedGrades = []

@@ -49,14 +49,19 @@ class LoginViewModel: ObservableObject {
                 }
             }
 
-            let _ = try! await AF.request(
-                requestUrl,
-                method: .post,
-                parameters: [
-                    "txtUser": username,
-                    "txtPwd": password
-                ]
-            ).serializingResponse(using: .data).value
+            do  {
+                let _ = try await AF.request(
+                    requestUrl,
+                    method: .post,
+                    parameters: [
+                        "txtUser": username,
+                        "txtPwd": password
+                    ]
+                ).serializingResponse(using: .string).value
+            } catch {
+                print(error.localizedDescription)
+                return false
+            }
         }
 
         return true

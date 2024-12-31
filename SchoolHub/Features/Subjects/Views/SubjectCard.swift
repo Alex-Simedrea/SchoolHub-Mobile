@@ -73,7 +73,7 @@ struct SubjectCard: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 12)
                     //                        .foregroundStyle(.white)
-                    Text("\(subject.grades.average, format: .number)")
+                    Text("\(subject.grades.average == 0 ? "N/A" : subject.grades.average.gradeFormatted)")
                         //                        .foregroundStyle(.white)
                         .font(.caption.bold())
                 }

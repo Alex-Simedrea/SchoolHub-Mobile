@@ -9,16 +9,19 @@ import SwiftUI
 
 struct SubjectAverageView: View {
     let subject: Subject
+    @ObservedObject var averagesViewModel: AveragesViewModel
     @StateObject private var viewModel: SubjectAverageViewModel
     @State private var showingSimulation = false
-    @State private var simulatedGrade = 7
+    @State private var simulatedGrade = 10
     
-    init(subject: Subject, targetAverage: Int) {
+    init(subject: Subject, targetAverage: Int, averagesViewModel: AveragesViewModel) {
         self.subject = subject
+        self.averagesViewModel = averagesViewModel
         self._viewModel = StateObject(
             wrappedValue: SubjectAverageViewModel(
                 subject: subject,
-                targetAverage: targetAverage
+                targetAverage: targetAverage,
+                averagesViewModel: averagesViewModel
             )
         )
     }
@@ -27,9 +30,16 @@ struct SubjectAverageView: View {
         List {
             Section("Average") {
                 LabeledContent {
-                    Text("\(viewModel.simulation.average)")
-                        .font(.headline)
-                        .foregroundStyle(.primary)
+                    HStack(spacing: 14) {
+                        Text("\(viewModel.simulation.average)")
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                        if viewModel.simulation.averageDouble != Double(viewModel.simulation.average) {
+                            Text("\(viewModel.simulation.averageDouble.gradeFormatted)")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
                 } label: {
                     Text("Current Average")
                 }
@@ -90,7 +100,7 @@ struct SubjectAverageView: View {
                     Text("\(grade.value)")
                         .swipeActions {
                             Button("Delete", role: .destructive) {
-                                viewModel.simulation.simulatedGrades.removeAll { $0.id == grade.id }
+                                viewModel.removeSimulatedGrade(withID: grade.id)
                             }
                         }
                 }
@@ -119,9 +129,7 @@ struct SubjectAverageView: View {
                 .navigationBarItems(
                     leading: Button("Cancel") { showingSimulation = false },
                     trailing: Button("Add") {
-                        viewModel.simulation.simulatedGrades.append(
-                            GradeSimulation(value: simulatedGrade, isSimulated: true)
-                        )
+                        viewModel.addSimulatedGrade(simulatedGrade)
                         showingSimulation = false
                     }
                 )
